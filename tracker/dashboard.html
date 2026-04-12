@@ -131,7 +131,7 @@
   var URL = 'https://gczopudgxfciatvtxhll.supabase.co';
   var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdjem9wdWRneGZjaWF0dnR4aGxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5NzgwMzgsImV4cCI6MjA5MTU1NDAzOH0.Qc4hAZ0AqFAgNcPcRkNk2SUvs4uR2hwk9m2JeZ7lIV0';
 
-  var db   = supabase.createClient(URL, KEY);
+  var db   = supabase.createClient(URL, KEY, { auth: { persistSession: false } });
   var rows = [];
 
   function ago(iso) {
@@ -187,11 +187,19 @@
   }
 
   async function load() {
-    var res = await db.from('page_views').select('*').order('created_at', { ascending: false }).limit(200);
-    if (res.error) { console.error(res.error); return; }
-    rows = res.data || [];
-    renderStats();
-    renderTable(false);
+    try {
+      var res = await db.from('page_views').select('*').order('created_at', { ascending: false }).limit(200);
+      if (res.error) {
+        console.error('Supabase error:', res.error);
+        document.getElementById('s-total').textContent = 'ERR';
+        return;
+      }
+      rows = res.data || [];
+      renderStats();
+      renderTable(false);
+    } catch(e) {
+      console.error('Load failed:', e);
+    }
   }
 
   // Realtime
