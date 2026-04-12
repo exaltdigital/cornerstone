@@ -506,6 +506,24 @@
   sliderEl.addEventListener('input', function(){ update(parseInt(this.value)); });
   update(150);
 
+  // ── Log boost purchase when Stripe redirects back ─────────
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('boost') === 'success') {
+    var pSite   = params.get('site')   || 'unknown';
+    var pAmount = parseInt(params.get('amount')) || 0;
+    fetch('https://gczopudgxfciatvtxhll.supabase.co/rest/v1/boosts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdjem9wdWRneGZjaWF0dnR4aGxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5NzgwMzgsImV4cCI6MjA5MTU1NDAzOH0.Qc4hAZ0AqFAgNcPcRkNk2SUvs4uR2hwk9m2JeZ7lIV0',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdjem9wdWRneGZjaWF0dnR4aGxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5NzgwMzgsImV4cCI6MjA5MTU1NDAzOH0.Qc4hAZ0AqFAgNcPcRkNk2SUvs4uR2hwk9m2JeZ7lIV0',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ site_url: pSite, amount: pAmount })
+    });
+    history.replaceState({}, '', '/'); // clean up URL
+  }
+
   // ── Button handlers ───────────────────────────────────────
   var planLinks = {
     '50':  'https://buy.stripe.com/7sY5kE3y80RT7SR7Od67S00',

@@ -4,7 +4,8 @@
       "Bash(set SUPABASE_ACCESS_TOKEN=sbp_ad84589aca2a83dd24413f1605bfcf4fab44023b)",
       "Bash(supabase link:*)",
       "Bash(SUPABASE_ACCESS_TOKEN=sbp_ad84589aca2a83dd24413f1605bfcf4fab44023b supabase link --project-ref gczopudgxfciatvtxhll)",
-      "Bash(SUPABASE_ACCESS_TOKEN=sbp_ad84589aca2a83dd24413f1605bfcf4fab44023b supabase functions deploy create-checkout --project-ref gczopudgxfciatvtxhll)"
+      "Bash(SUPABASE_ACCESS_TOKEN=sbp_ad84589aca2a83dd24413f1605bfcf4fab44023b supabase functions deploy create-checkout --project-ref gczopudgxfciatvtxhll)",
+      "Bash(curl:*)"
     ]
   }
 }

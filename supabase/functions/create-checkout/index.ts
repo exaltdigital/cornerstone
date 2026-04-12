@@ -31,8 +31,8 @@ Deno.serve(async (req) => {
       quantity: 1,
     }],
     mode: 'payment',
-    success_url: 'https://exaltdigital.github.com/?boost=success',
-    cancel_url:  'https://exaltdigital.github.com/',
+    success_url: 'https://exaltdigital.github.io/?boost=success&site=' + encodeURIComponent(siteUrl) + '&amount=' + amount,
+    cancel_url:  'https://exaltdigital.github.io/',
     metadata: { site_url: siteUrl, type: 'one_time_boost' },
   })
 
