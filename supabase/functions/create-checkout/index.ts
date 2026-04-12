@@ -15,7 +15,7 @@ Deno.serve(async (req) => {
     return new Response(null, { headers: corsHeaders })
   }
 
-  const { amount, siteUrl } = await req.json()
+  const { amount, siteUrl, visitors } = await req.json()
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
@@ -24,7 +24,9 @@ Deno.serve(async (req) => {
         currency: 'aud',
         product_data: {
           name: 'Exalt Digital — Instant SEO Boost',
-          description: `One-time traffic campaign for ${siteUrl}`,
+          description: visitors
+            ? `One-time campaign for ${siteUrl} — ${Number(visitors).toLocaleString()} estimated new visitors`
+            : `One-time traffic campaign for ${siteUrl}`,
         },
         unit_amount: Math.round(amount * 100),
       },

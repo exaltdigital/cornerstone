@@ -487,7 +487,7 @@
     fetch('https://gczopudgxfciatvtxhll.supabase.co/functions/v1/dynamic-api', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: amt, siteUrl: siteInp.value.trim() })
+      body: JSON.stringify({ amount: amt, siteUrl: siteInp.value.trim(), visitors: calcVisitors(amt) })
     })
     .then(function(r){ return r.json(); })
     .then(function(data){
