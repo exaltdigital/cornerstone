@@ -519,7 +519,8 @@
       },
       body: JSON.stringify({
         site_url: params.get('site') || 'unknown',
-        amount: parseInt(params.get('amount')) || 0
+        amount: parseInt(params.get('amount')) || 0,
+        visitors_target: parseInt(params.get('visitors')) || 0
       })
     });
     history.replaceState({}, '', '/');
