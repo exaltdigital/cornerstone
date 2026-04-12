@@ -203,6 +203,44 @@
     .step h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
     .step p  { font-size: 0.85rem; color: #666; }
 
+    /* ── Slider mobile ── */
+    input[type=range] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 8px; border-radius: 999px; outline: none; cursor: pointer;
+      touch-action: manipulation;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #7c6fff; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(124,111,255,0.5);
+    }
+    input[type=range]::-moz-range-thumb {
+      width: 32px; height: 32px; border-radius: 50%; border: none;
+      background: #7c6fff; cursor: pointer;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      header { padding: 1rem 4%; }
+      .hero { padding: 2.5rem 4% 2rem; }
+      .plans-section { padding: 2rem 4%; }
+      .plan { padding: 1.5rem; }
+      .plan-price { font-size: 2.8rem; }
+      .boost-section { padding: 2rem 4%; }
+      .boost-box { padding: 1.25rem; }
+      .boost-inner h2 { font-size: 1.5rem; }
+      .boost-result { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+      .boost-result-num { font-size: 1.8rem; }
+      .how-section { padding: 2rem 4%; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      input[type=range]::-webkit-slider-thumb { width: 40px; height: 40px; }
+    }
+    @media (max-width: 380px) {
+      .steps { grid-template-columns: 1fr; }
+    }
+
     /* ── Footer ── */
     footer {
       background: #111; color: #666;
@@ -309,7 +347,15 @@
         </div>
         <div>
           <label class="input-label" style="color:#888;">How much do you want to spend? (AUD)</label>
-          <input type="number" class="site-input" id="boost-amount" placeholder="e.g. 150" min="10" />
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.6rem;flex-wrap:wrap;">
+            <div style="font-size:1.8rem;font-weight:900;color:#a78bfa;">A$<span id="boost-display">150</span></div>
+            <div id="boost-deal" style="font-size:0.82rem;font-weight:700;padding:0.3rem 0.8rem;border-radius:999px;background:#2a2a3d;color:#aaa;"></div>
+          </div>
+          <input type="range" id="boost-amount" min="10" max="2000" value="150" step="10"
+            style="background:linear-gradient(90deg,#7c6fff 15%,rgba(255,255,255,0.1) 15%);margin-bottom:0.5rem;" />
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#666;">
+            <span>A$10</span><span>A$500</span><span>A$1,000</span><span>A$2,000</span>
+          </div>
         </div>
       </div>
       <div class="boost-result">
@@ -363,16 +409,42 @@
   };
 
   // ── Visitor estimate ──────────────────────────────────────
-  var boostAmt = document.getElementById('boost-amount');
-  var boostVis = document.getElementById('boost-visitors');
+  var boostAmt     = document.getElementById('boost-amount');
+  var boostVis     = document.getElementById('boost-visitors');
+  var boostDisplay = document.getElementById('boost-display');
+  var boostDeal    = document.getElementById('boost-deal');
 
-  function calcVisitors(n) {
-    return Math.round((n <= 500 ? n * 20 : 10000 + (n - 500) * 14) / 10) * 10;
+  // Rate per dollar increases with spend — better deal the more you spend
+  function ratePerDollar(n) {
+    return 20 + (n / 2000) * 50; // $10 = 20/dollar, $2000 = 70/dollar
   }
+  function calcVisitors(n) {
+    return Math.round(n * ratePerDollar(n) / 10) * 10;
+  }
+
+  function updateDeal(n) {
+    var rate = Math.round(ratePerDollar(n));
+    var label, bg, color;
+    if (n < 50)        { label = 'Standard — ' + rate + ' visitors per A$1';      bg = '#1e1e2e'; color = '#888'; }
+    else if (n < 200)  { label = 'Good deal — ' + rate + ' visitors per A$1';     bg = '#1a2035'; color = '#60a5fa'; }
+    else if (n < 500)  { label = 'Great deal — ' + rate + ' visitors per A$1';    bg = '#1a2d20'; color = '#22c55e'; }
+    else if (n < 1000) { label = 'Excellent — ' + rate + ' visitors per A$1';     bg = '#2a1f10'; color = '#f59e0b'; }
+    else               { label = '🔥 Best value — ' + rate + ' visitors per A$1'; bg = '#2a1030'; color = '#a78bfa'; }
+    boostDeal.textContent = label;
+    boostDeal.style.background = bg;
+    boostDeal.style.color = color;
+  }
+
   boostAmt.addEventListener('input', function() {
-    var n = parseInt(this.value) || 0;
-    boostVis.textContent = n >= 10 ? calcVisitors(n).toLocaleString() : '—';
+    var n = parseInt(this.value) || 10;
+    boostDisplay.textContent = n.toLocaleString();
+    boostVis.textContent = calcVisitors(n).toLocaleString();
+    updateDeal(n);
+    var pct = Math.round(((n - 10) / (2000 - 10)) * 100);
+    this.style.background = 'linear-gradient(90deg,#7c6fff ' + pct + '%,rgba(255,255,255,0.1) ' + pct + '%)';
   });
+
+  updateDeal(150);
 
   // ── Require website field ─────────────────────────────────
   function requireSite(inp) {
@@ -399,7 +471,6 @@
     var siteInp = document.getElementById('boost-site');
     var amt = parseInt(boostAmt.value) || 0;
     if (!requireSite(siteInp)) return;
-    if (amt < 10) { boostAmt.focus(); return; }
 
     var btn = this;
     btn.textContent = 'Redirecting to payment…';
