@@ -466,6 +466,14 @@
     });
   });
 
+  // ── Auto-fill boost site from localStorage ───────────────
+  var boostSiteInp = document.getElementById('boost-site');
+  var savedSite = localStorage.getItem('exalt_boost_site');
+  if (savedSite) boostSiteInp.value = savedSite;
+  boostSiteInp.addEventListener('input', function() {
+    if (this.value.trim()) localStorage.setItem('exalt_boost_site', this.value.trim());
+  });
+
   // ── One-time boost button ─────────────────────────────────
   document.getElementById('boost-btn').addEventListener('click', function() {
     var siteInp = document.getElementById('boost-site');
