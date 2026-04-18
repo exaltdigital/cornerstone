@@ -3,142 +3,197 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Exalt Digital — Sign In</title>
+  <title>Cornerstone — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="newstyles.css" />
   <script src="config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #f8f8f8; color: #111;
-      min-height: 100vh; display: flex; flex-direction: column;
-    }
-    header {
-      background: #111; color: #fff;
-      padding: 1.25rem 5%;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .logo { font-size: 1.3rem; font-weight: 800; text-decoration: none; color: #fff; }
-    .logo span { color: #a78bfa; }
+    body { min-height: 100svh; display: flex; flex-direction: column; }
 
-    .page {
-      flex: 1; display: flex; align-items: center;
-      justify-content: center; padding: 2rem 1rem;
+    .login-wrap {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: calc(var(--nav-h) + 40px) clamp(16px,5vw,40px) 60px;
     }
-    .card {
-      background: #fff; border-radius: 16px;
-      border: 2px solid #e5e5e5;
-      padding: 2.5rem; width: 100%; max-width: 420px;
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: clamp(28px, 5vw, 44px);
+      width: 100%; max-width: 440px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
     }
-    .card h1 { font-size: 1.6rem; font-weight: 900; margin-bottom: 0.25rem; }
-    .card > p { font-size: 0.95rem; color: #666; margin-bottom: 2rem; }
+    .login-logo {
+      font-family: var(--font-sans); font-size: 1.3rem;
+      font-weight: 800; margin-bottom: 28px; display: block;
+    }
+    .login-logo .dot { color: var(--accent-2); }
+    .login-card h1 {
+      font-family: var(--font-sans); font-size: 1.7rem;
+      font-weight: 800; color: var(--text); margin-bottom: 6px;
+    }
+    .login-card > p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 28px; }
 
-    /* tabs */
+    /* Tabs */
     .tabs {
-      display: flex; gap: 0; margin-bottom: 2rem;
-      border-bottom: 2px solid #eee;
+      display: flex; gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
     }
     .tab {
-      flex: 1; padding: 0.6rem; text-align: center;
-      font-weight: 700; font-size: 0.95rem; cursor: pointer;
-      color: #999; border-bottom: 2px solid transparent;
-      margin-bottom: -2px; transition: color .15s, border-color .15s;
+      flex: 1; padding: 10px; text-align: center;
+      font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; color: var(--text-muted);
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
     }
-    .tab.active { color: #7c6fff; border-color: #7c6fff; }
+    .tab.active { color: var(--accent); border-color: var(--accent); }
 
-    label {
-      display: block;
-      font-size: 0.8rem; font-weight: 700; color: #888;
-      text-transform: uppercase; letter-spacing: 1px;
-      margin-bottom: 0.4rem;
+    /* Fields */
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 8px;
     }
-    input[type=email], input[type=password], input[type=text] {
-      width: 100%; padding: 0.8rem 1rem;
-      border: 2px solid #e5e5e5; border-radius: 10px;
-      font-size: 1rem; color: #111; outline: none;
-      transition: border-color .2s; margin-bottom: 1.25rem;
-      background: #fafafa;
+    .field input {
+      width: 100%; padding: 13px 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 0.95rem;
+      color: var(--text); outline: none;
+      transition: border-color 0.25s, background 0.25s;
     }
-    input:focus { border-color: #7c6fff; background: #fff; }
+    .field input::placeholder { color: var(--text-faint); }
+    .field input:focus { border-color: var(--accent); background: rgba(74,222,128,0.04); }
 
-    .btn {
-      width: 100%; padding: 1rem;
-      background: #7c6fff; color: #fff;
-      border: none; border-radius: 12px; cursor: pointer;
-      font-size: 1.1rem; font-weight: 800;
-      box-shadow: 0 4px 16px rgba(124,111,255,0.35);
-      transition: opacity .15s;
+    .login-btn {
+      width: 100%; padding: 14px;
+      background: var(--accent); color: #05050a;
+      border: none; border-radius: 50px; cursor: pointer;
+      font-family: var(--font-sans); font-size: 1rem; font-weight: 700;
+      box-shadow: 0 4px 20px rgba(74,222,128,0.3);
+      transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+      margin-top: 4px;
     }
-    .btn:hover { opacity: 0.88; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .login-btn:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(74,222,128,0.35); }
+    .login-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     .msg {
-      margin-top: 1rem; padding: 0.8rem 1rem;
-      border-radius: 8px; font-size: 0.9rem; font-weight: 600;
-      display: none;
+      margin-top: 16px; padding: 12px 16px;
+      border-radius: var(--radius-sm); font-size: 0.88rem; font-weight: 600;
+      display: none; line-height: 1.5;
     }
-    .msg.error   { background: #fee2e2; color: #991b1b; display: block; }
-    .msg.success { background: #dcfce7; color: #166534; display: block; }
+    .msg.error   { background: rgba(248,113,113,0.1); color: #f87171; border: 1px solid rgba(248,113,113,0.2); display: block; }
+    .msg.success { background: rgba(74,222,128,0.1);  color: var(--accent-2); border: 1px solid rgba(74,222,128,0.2); display: block; }
 
-    footer {
-      background: #111; color: #666;
-      padding: 1.25rem 5%; text-align: center; font-size: 0.85rem;
-    }
-    footer span { color: #a78bfa; font-weight: 700; }
+    footer { border-top: 1px solid var(--border); padding: 20px 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-size: 0.8rem; color: var(--text-faint); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 0.8rem; color: var(--text-faint); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text); }
   </style>
 </head>
 <body>
 
-<header>
-  <a href="/" class="logo">Exalt <span>Digital</span></a>
-</header>
+<div class="noise"></div>
+<div class="bg-glow bg-glow-a"></div>
+<div class="bg-glow bg-glow-b"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
 
-<div class="page">
-  <div class="card">
+<nav id="nav" class="scrolled">
+  <div class="nav-inner">
+    <div class="logo"><a href="/">Cornerstone<span class="dot">.</span></a></div>
+    <div class="nav-links">
+      <a href="/about.html">About</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/faq.html">FAQ</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+</div>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <a href="/" class="login-logo">Cornerstone<span class="dot">.</span></a>
     <h1>Welcome back</h1>
-    <p>Sign in to view your campaigns, or create a new account.</p>
+    <p>Sign in to your account, or create a new one to get started.</p>
 
     <div class="tabs">
       <div class="tab active" data-tab="signin">Sign in</div>
       <div class="tab" data-tab="signup">Create account</div>
     </div>
 
-    <!-- Sign in form -->
+    <!-- Sign in -->
     <div id="signin-form">
-      <label>Email address</label>
-      <input type="email" id="signin-email" placeholder="you@example.com" autocomplete="email" />
-      <label>Password</label>
-      <input type="password" id="signin-password" placeholder="Your password" autocomplete="current-password" />
-      <button class="btn" id="signin-btn">Sign in</button>
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="signin-email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="signin-password" placeholder="Your password" autocomplete="current-password" />
+      </div>
+      <button class="login-btn" id="signin-btn">Sign in</button>
     </div>
 
-    <!-- Sign up form -->
+    <!-- Sign up -->
     <div id="signup-form" style="display:none;">
-      <label>Email address</label>
-      <input type="email" id="signup-email" placeholder="you@example.com" autocomplete="email" />
-      <label>Password</label>
-      <input type="password" id="signup-password" placeholder="Choose a password (min 8 chars)" autocomplete="new-password" />
-      <label>Your website address</label>
-      <input type="text" id="signup-site" placeholder="e.g. www.mywebsite.com.au" autocomplete="url" />
-      <button class="btn" id="signup-btn">Create account</button>
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="signup-password" placeholder="Choose a password (min 8 chars)" autocomplete="new-password" />
+      </div>
+      <div class="field">
+        <label>Your website address</label>
+        <input type="text" id="signup-site" placeholder="e.g. www.mywebsite.com.au" autocomplete="url" />
+      </div>
+      <button class="login-btn" id="signup-btn">Create account</button>
     </div>
 
     <div class="msg" id="msg"></div>
   </div>
 </div>
 
-<footer>&copy; 2026 <span>Exalt Digital</span>. All rights reserved.</footer>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 Cornerstone. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="/faq.html">FAQ</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script>
   var cfg = window.ExaltConfig
   var sb  = window.supabase.createClient(cfg.supabase.url, cfg.supabase.anonKey)
 
-  // Redirect if already logged in
   sb.auth.getSession().then(function(r) {
     if (r.data.session) window.location.href = '/dashboard.html'
   })
 
-  // Tab switching
   document.querySelectorAll('.tab').forEach(function(tab) {
     tab.addEventListener('click', function() {
       document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active') })
@@ -151,35 +206,23 @@
 
   function showMsg(text, type) {
     var el = document.getElementById('msg')
-    el.textContent = text
-    el.className = 'msg ' + type
+    el.textContent = text; el.className = 'msg ' + type
   }
   function clearMsg() {
     var el = document.getElementById('msg')
-    el.className = 'msg'
-    el.textContent = ''
+    el.className = 'msg'; el.textContent = ''
   }
 
-  // Sign in
   document.getElementById('signin-btn').addEventListener('click', async function() {
     var email    = document.getElementById('signin-email').value.trim()
     var password = document.getElementById('signin-password').value
     if (!email || !password) { showMsg('Please enter your email and password.', 'error'); return }
-
-    this.textContent = 'Signing in…'
-    this.disabled = true
-
+    this.textContent = 'Signing in\u2026'; this.disabled = true
     var { error } = await sb.auth.signInWithPassword({ email, password })
-    if (error) {
-      showMsg(error.message, 'error')
-      this.textContent = 'Sign in'
-      this.disabled = false
-    } else {
-      window.location.href = '/dashboard.html'
-    }
+    if (error) { showMsg(error.message, 'error'); this.textContent = 'Sign in'; this.disabled = false }
+    else window.location.href = '/dashboard.html'
   })
 
-  // Sign up
   document.getElementById('signup-btn').addEventListener('click', async function() {
     var email    = document.getElementById('signup-email').value.trim()
     var password = document.getElementById('signup-password').value
@@ -187,33 +230,33 @@
     if (!email || !password) { showMsg('Please enter your email and a password.', 'error'); return }
     if (password.length < 8) { showMsg('Password must be at least 8 characters.', 'error'); return }
     if (!siteUrl) { showMsg('Please enter your website address.', 'error'); return }
-
-    this.textContent = 'Creating account…'
-    this.disabled = true
-
+    this.textContent = 'Creating account\u2026'; this.disabled = true
     var { error } = await sb.auth.signUp({ email, password, options: { data: { site_url: siteUrl } } })
-    if (error) {
-      showMsg(error.message, 'error')
-      this.textContent = 'Create account'
-      this.disabled = false
-      return
-    }
-    // Auto sign-in immediately (requires "Confirm email" OFF in Supabase Dashboard → Auth → Providers → Email)
+    if (error) { showMsg(error.message, 'error'); this.textContent = 'Create account'; this.disabled = false; return }
     var { error: loginErr } = await sb.auth.signInWithPassword({ email, password })
-    if (loginErr) {
-      showMsg('Account created! You can now sign in.', 'success')
-      this.textContent = 'Create account'
-      this.disabled = false
-    } else {
-      window.location.href = '/dashboard.html'
-    }
+    if (loginErr) { showMsg('Account created! You can now sign in.', 'success'); this.textContent = 'Create account'; this.disabled = false }
+    else window.location.href = '/dashboard.html'
   })
 
-  // Enter key submits
   document.addEventListener('keydown', function(e) {
     if (e.key !== 'Enter') return
     var activeTab = document.querySelector('.tab.active').dataset.tab
     document.getElementById(activeTab + '-btn').click()
+  })
+
+  /* Nav + hamburger */
+  var hamburger = document.getElementById('hamburger'), mobileMenu = document.getElementById('mobile-menu')
+  hamburger.addEventListener('click', function() { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open') })
+  mobileMenu.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', function() { hamburger.classList.remove('open'); mobileMenu.classList.remove('open') }) })
+
+  /* Cursor */
+  var cursor = document.getElementById('cursor'), follower = document.getElementById('cursor-follower')
+  var mx = 0, my = 0, fx = 0, fy = 0
+  document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px' })
+  ;(function af() { fx += (mx-fx)*0.12; fy += (my-fy)*0.12; follower.style.left = fx+'px'; follower.style.top = fy+'px'; requestAnimationFrame(af) })()
+  document.querySelectorAll('a,button').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { cursor.classList.add('hovered'); follower.classList.add('hovered') })
+    el.addEventListener('mouseleave', function() { cursor.classList.remove('hovered'); follower.classList.remove('hovered') })
   })
 </script>
 </body>

@@ -3,249 +3,268 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Frequently asked questions about Exalt Digital's SEO service." />
-  <title>FAQ — Exalt Digital</title>
+  <meta name="description" content="Frequently asked questions about Cornerstone's SEO service." />
+  <title>FAQ — Cornerstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="newstyles.css" />
   <script src="config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f8f8f8; color: #111; font-size: 18px; line-height: 1.6; }
-
-    header {
-      background: #111; color: #fff;
-      padding: 1.25rem 5%;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem; flex-wrap: wrap;
-    }
-    .logo a { font-size: 1.4rem; font-weight: 800; text-decoration: none; color: #fff; }
-    .logo span { color: #a78bfa; }
-    .site-nav { display: flex; align-items: center; gap: 1.5rem; flex: 1; justify-content: center; }
-    .site-nav a { color: #aaa; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: color .15s; }
-    .site-nav a:hover, .site-nav a.active { color: #fff; }
-    .header-nav { display: flex; align-items: center; gap: 0.75rem; }
-    .header-btn { padding: 0.45rem 1.1rem; border-radius: 8px; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: opacity .15s; }
-    .header-btn:hover { opacity: 0.8; }
-    .header-btn-outline { border: 1px solid #444; color: #ccc; background: none; }
-    .header-btn-fill { background: #7c6fff; color: #fff; border: none; }
+    section[id] { scroll-margin-top: var(--nav-h); }
 
     .page-hero {
-      background: #fff; border-bottom: 2px solid #eee;
-      padding: 3.5rem 5% 2.5rem; text-align: center;
+      min-height: 44vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: calc(var(--nav-h) + 60px) 0 80px;
+      text-align: center; position: relative; overflow: hidden;
     }
-    .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; margin-bottom: 0.75rem; }
-    .page-hero h1 span { color: #7c6fff; }
-    .page-hero p { font-size: 1.1rem; color: #555; max-width: 520px; margin: 0 auto; }
+    .page-hero-content { position: relative; z-index: 1; max-width: 600px; padding: 0 clamp(20px,5vw,60px); }
 
-    .content { max-width: 720px; margin: 0 auto; padding: 3rem 5%; }
-
-    .faq-group { margin-bottom: 2.5rem; }
+    .faq-group { margin-bottom: 3rem; }
     .faq-group-title {
-      font-size: 0.8rem; font-weight: 700; color: #7c6fff;
-      text-transform: uppercase; letter-spacing: 1.5px;
-      margin-bottom: 1rem; padding-bottom: 0.5rem;
-      border-bottom: 2px solid #f0eeff;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--accent-2); text-transform: uppercase;
+      letter-spacing: 0.12em; margin-bottom: 16px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
     }
 
     details {
-      background: #fff; border: 2px solid #e5e5e5;
-      border-radius: 12px; margin-bottom: 0.75rem;
-      transition: border-color .2s;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); margin-bottom: 10px;
+      transition: border-color 0.25s;
     }
-    details[open] { border-color: #7c6fff; }
+    details[open] { border-color: var(--accent); }
     summary {
-      font-size: 1rem; font-weight: 700;
-      padding: 1.1rem 1.25rem;
+      font-family: var(--font-sans); font-size: 0.95rem; font-weight: 700;
+      color: var(--text); padding: 20px 24px;
       cursor: pointer; list-style: none;
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 1rem;
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
     }
     summary::-webkit-details-marker { display: none; }
     summary::after {
-      content: '+'; font-size: 1.3rem; font-weight: 400;
-      color: #7c6fff; flex-shrink: 0;
-      transition: transform .2s;
+      content: '+'; font-size: 1.4rem; font-weight: 300;
+      color: var(--accent); flex-shrink: 0; transition: transform 0.2s;
     }
     details[open] summary::after { content: '−'; }
     .faq-body {
-      padding: 0 1.25rem 1.25rem;
-      font-size: 0.95rem; color: #444; line-height: 1.7;
+      padding: 0 24px 22px;
+      font-size: 0.9rem; color: var(--text-muted); line-height: 1.75;
     }
-    .faq-body p { margin-bottom: 0.6rem; }
+    .faq-body p { margin-bottom: 0.7rem; }
     .faq-body p:last-child { margin-bottom: 0; }
 
     .cta-band {
-      background: #111; color: #fff;
-      padding: 3rem 5%; text-align: center;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: clamp(40px,6vw,72px);
+      text-align: center;
     }
-    .cta-band h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 0.5rem; }
-    .cta-band p { color: #aaa; margin-bottom: 1.5rem; font-size: 1rem; }
-    .cta-btn {
-      display: inline-block; background: #7c6fff; color: #fff;
-      padding: 0.9rem 2rem; border-radius: 12px;
-      font-size: 1rem; font-weight: 800; text-decoration: none;
-      box-shadow: 0 4px 16px rgba(124,111,255,0.35);
-      transition: opacity .15s;
+    .cta-band h2 {
+      font-family: var(--font-sans); font-size: clamp(1.6rem,3.5vw,2.2rem);
+      font-weight: 800; margin-bottom: 0.5rem; color: var(--text);
     }
-    .cta-btn:hover { opacity: 0.88; }
-
-    footer {
-      background: #111; color: #666;
-      padding: 1.5rem 5%; text-align: center; font-size: 0.85rem;
-    }
-    footer span { color: #a78bfa; font-weight: 700; }
-
-    @media (max-width: 600px) {
-      body { font-size: 16px; }
-      header { padding: 1rem 4%; }
-      .site-nav { order: 3; width: 100%; justify-content: flex-start; gap: 1rem; }
-      .content { padding: 2rem 4%; }
-    }
+    .cta-band p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo"><a href="/">Exalt <span>Digital</span></a></div>
-  <nav class="site-nav">
-    <a href="/about.html">About</a>
-    <a href="/faq.html" class="active">FAQ</a>
-    <a href="/contact.html">Contact</a>
-  </nav>
-  <nav class="header-nav" id="header-nav">
-    <a href="/login.html" class="header-btn header-btn-outline">Sign in</a>
-  </nav>
-</header>
+<div class="noise"></div>
+<div class="bg-glow bg-glow-a"></div>
+<div class="bg-glow bg-glow-b"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="logo"><a href="/">Cornerstone<span class="dot">.</span></a></div>
+    <div class="nav-links">
+      <a href="/about.html">About</a>
+      <a href="/faq.html" style="color:var(--text);">FAQ</a>
+      <a href="/contact.html">Contact</a>
+      <div id="header-nav" style="display:flex;align-items:center;gap:10px;">
+        <a href="/login.html" class="btn btn-ghost" style="padding:10px 20px;border-radius:50px;font-size:0.88rem;">Sign in</a>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/faq.html">FAQ</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+    <li><a href="/login.html" style="color:var(--accent);">Get started</a></li>
+  </ul>
+</div>
 
 <div class="page-hero">
-  <h1>Common <span>questions.</span></h1>
-  <p>Everything you need to know before getting started with SEO.</p>
+  <div class="blob blob-1" style="opacity:0.07;"></div>
+  <div class="page-hero-content">
+    <p class="section-eyebrow">FAQ</p>
+    <h1 class="section-title" style="margin-bottom:16px;">Common <em>questions.</em></h1>
+    <p style="color:var(--text-muted);font-size:1.05rem;line-height:1.75;">Everything you need to know before getting started with SEO.</p>
+  </div>
 </div>
 
-<div class="content">
+<section>
+  <div class="container" style="max-width:760px;">
 
-  <div class="faq-group">
-    <div class="faq-group-title">About SEO</div>
+    <div class="faq-group reveal-up">
+      <div class="faq-group-title">About SEO</div>
 
-    <details>
-      <summary>What actually is SEO?</summary>
-      <div class="faq-body">
-        <p>SEO (Search Engine Optimisation) is the process of improving your website so that it appears more often — and higher — in Google search results.</p>
-        <p>When someone searches for a product, service, or topic related to your business, Google decides which websites to show. SEO is the work that helps your site be one of them.</p>
-      </div>
-    </details>
+      <details>
+        <summary>What actually is SEO?</summary>
+        <div class="faq-body">
+          <p>SEO (Search Engine Optimisation) is the process of improving your website so that it appears more often — and higher — in Google search results.</p>
+          <p>When someone searches for a product, service, or topic related to your business, Google decides which websites to show. SEO is the work that makes your site one of them.</p>
+        </div>
+      </details>
 
-    <details>
-      <summary>How long does it take to see results?</summary>
-      <div class="faq-body">
-        <p>Honestly — it depends. Most websites start to see meaningful movement in search visibility after 3–6 months of consistent work. Some see early changes sooner.</p>
-        <p>SEO is not instant. It builds over time, and the sites that stay the course see the best long-term outcomes.</p>
-      </div>
-    </details>
+      <details>
+        <summary>How long does it take to see results?</summary>
+        <div class="faq-body">
+          <p>Honestly — it depends. Most websites start seeing meaningful movement after 3–6 months of consistent work. Some see early changes sooner, particularly after the first 7-point technical audit (our Seed plan baseline) clears major blockers.</p>
+          <p>SEO is not instant. It builds over time, and the sites that stay the course see the best — often explosive — long-term outcomes.</p>
+        </div>
+      </details>
 
-    <details>
-      <summary>Can you guarantee I'll rank #1 on Google?</summary>
-      <div class="faq-body">
-        <p>No — and anyone who does is not being straight with you. Google's algorithm has hundreds of factors and changes constantly. What we can guarantee is consistent, honest work each month that improves how your site appears in search over time.</p>
-      </div>
-    </details>
+      <details>
+        <summary>Can you guarantee I'll rank #1 on Google?</summary>
+        <div class="faq-body">
+          <p>No — and anyone who does is not being straight with you. Google's algorithm has hundreds of factors and changes constantly. What we can guarantee is consistent, honest monthly work that measurably improves your site's visibility over time.</p>
+        </div>
+      </details>
 
-    <details>
-      <summary>Is SEO better than Google Ads?</summary>
-      <div class="faq-body">
-        <p>They serve different purposes. Google Ads put you in front of people immediately — but stop the moment you stop paying. SEO builds over time and keeps working without ongoing ad spend.</p>
-        <p>We offer both. Monthly SEO plans for long-term growth, and one-time Google Ads campaigns if you want a short-term traffic boost while your SEO builds up.</p>
-      </div>
-    </details>
+      <details>
+        <summary>Is SEO better than Google Ads?</summary>
+        <div class="faq-body">
+          <p>They serve different purposes. Google Ads put you in front of people immediately — but stop the moment you stop paying. SEO builds over time and keeps working without ongoing ad spend.</p>
+          <p>We offer both. Monthly SEO plans for long-term compounding growth, and a one-time Google Ads campaign if you want traffic while your SEO builds momentum.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="faq-group reveal-up">
+      <div class="faq-group-title">About Our Service</div>
+
+      <details>
+        <summary>What do you actually do each month?</summary>
+        <div class="faq-body">
+          <p>It depends on the plan. At minimum (Seed), we run a 7-point technical audit — title tags, meta descriptions, H1 structure, canonical tags, XML sitemap, robots.txt, schema markup — and fix everything we find.</p>
+          <p>Higher plans (Harvest, Faithful, Exalt) add ongoing on-page optimisation, keyword expansion, backlink audits, competitor gap analysis, page speed work, schema implementation, and more. Every month you receive a plain-English summary of what was done and what changed.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Do you write content for my site?</summary>
+        <div class="faq-body">
+          <p>Our plans focus on technical and structural SEO. Faithful and Exalt plans include a monthly content brief — a fully researched plan for a new page — but actual content writing is up to you or your team to implement.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>How many websites do you work on?</summary>
+        <div class="faq-body">
+          <p>Cornerstone is a solo operation. We deliberately keep the client list small so every site gets genuine attention — not a template approach. If we're at capacity, we'll let you know upfront.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>What do you need from me to get started?</summary>
+        <div class="faq-body">
+          <p>Just your website URL. After sign-up we'll review your site and reach out if we need anything else — like Google Search Console access for higher-tier plans. You don't need to prepare anything in advance.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="faq-group reveal-up">
+      <div class="faq-group-title">Pricing &amp; Contracts</div>
+
+      <details>
+        <summary>Is there a lock-in contract?</summary>
+        <div class="faq-body">
+          <p>No. All plans are month-to-month. You can cancel any time — no penalty, no questions asked. We'd rather keep clients because the work is good, not because of contract terms.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Which plan should I choose?</summary>
+        <div class="faq-body">
+          <p>If you're serious about dominating your niche and want explosive, compounding growth, the <strong>Exalt plan at A$600/month</strong> is our strongest recommendation. It gives us maximum time and tools to deliver the full stack: local SEO domination, a 13-point monthly ranking audit, topical authority strategy, competitor intelligence, and a dedicated communication channel.</p>
+          <p>If budget is the primary constraint, Faithful (A$400/mo) still delivers agency-level results. Harvest (A$200/mo) is a solid choice for sites that need steady, consistent improvement. Seed (A$100/mo) gets your technical foundation right first.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>What's the difference between the SEO plans and a Google Ads campaign?</summary>
+        <div class="faq-body">
+          <p>Monthly SEO plans are ongoing — we work on your site each month to improve your visibility in regular (non-ad) search results. This is a long-term investment that compounds over time.</p>
+          <p>The one-time Google Ads campaign is a single payment that runs paid ads immediately. It's a short-term boost — ideal to run while your SEO is building in the background.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="cta-band reveal-up">
+      <h2>Still have questions?</h2>
+      <p>Send us a message and we'll get back to you within one business day.</p>
+      <a href="/contact.html" class="btn btn-primary">Get in touch &rarr;</a>
+    </div>
+
   </div>
-
-  <div class="faq-group">
-    <div class="faq-group-title">About Our Service</div>
-
-    <details>
-      <summary>What do you actually do each month?</summary>
-      <div class="faq-body">
-        <p>It depends on the plan, but typically: fixing technical issues that prevent Google from reading your site properly, improving page titles and structure, expanding the search terms your site can appear for, and making ongoing refinements based on what's working.</p>
-        <p>Every month you receive a plain English summary of what was done and what changed.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Do you write content for my site?</summary>
-      <div class="faq-body">
-        <p>No — our service focuses on the technical and structural SEO improvements that help Google understand and rank your existing pages. We don't write blog posts or articles as part of our plans.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>How many websites do you work on?</summary>
-      <div class="faq-body">
-        <p>Exalt Digital is a solo operation. We deliberately keep the client list small so every site gets genuine attention — not a template approach. If we're at capacity, we'll let you know.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>What do you need from me to get started?</summary>
-      <div class="faq-body">
-        <p>Just your website URL. After sign-up we'll review your site and reach out if we need anything else. You don't need to prepare anything in advance.</p>
-      </div>
-    </details>
-  </div>
-
-  <div class="faq-group">
-    <div class="faq-group-title">Pricing & Contracts</div>
-
-    <details>
-      <summary>Is there a lock-in contract?</summary>
-      <div class="faq-body">
-        <p>No. All plans are month-to-month. You can cancel any time — no penalty, no questions asked. We'd rather keep clients because the work is good, not because of contract terms.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>Which plan should I choose?</summary>
-      <div class="faq-body">
-        <p>The Pro plan at A$400/month is our most popular and what we recommend for most clients who want meaningful results. It gives us the time and budget to do real ongoing work.</p>
-        <p>If you're just starting out or working with a tighter budget, the Starter or Growth plans still deliver solid foundational improvements.</p>
-      </div>
-    </details>
-
-    <details>
-      <summary>What's the difference between the SEO plans and a Google Ads campaign?</summary>
-      <div class="faq-body">
-        <p>The monthly SEO plans are ongoing — we work on your site each month to improve your visibility in regular (non-ad) search results. This is a long-term investment that compounds.</p>
-        <p>The one-time Google Ads campaign is a single payment that puts your site in front of searchers via paid ads immediately. It's a short-term boost — great to run while your SEO is building.</p>
-      </div>
-    </details>
-  </div>
-
-</div>
-
-<div class="cta-band">
-  <h2>Still have questions?</h2>
-  <p>Send us a message and we'll get back to you.</p>
-  <a href="/contact.html" class="cta-btn">Get in touch &rarr;</a>
-</div>
+</section>
 
 <footer>
-  &copy; 2026 <span>Exalt Digital</span>. All rights reserved.
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 <strong style="color:var(--text);">Cornerstone</strong>. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="/about.html">About</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/dashboard.html">My orders</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <script>
   var cfg = window.ExaltConfig
   var sb  = window.supabase.createClient(cfg.supabase.url, cfg.supabase.anonKey)
-  var currentUser = null
   sb.auth.getSession().then(function(r) {
-    currentUser = r.data.session ? r.data.session.user : null
-    var nav = document.getElementById('header-nav')
-    if (currentUser) {
-      var siteUrl = currentUser.user_metadata && currentUser.user_metadata.site_url
-      var siteChip = siteUrl ? '<a href="' + (siteUrl.startsWith('http') ? siteUrl : 'https://' + siteUrl) + '" target="_blank" rel="noopener" class="header-btn header-btn-outline" style="color:#a78bfa;border-color:#4c3f8a;">' + siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '') + ' ↗</a>' : ''
-      nav.innerHTML = siteChip + '<a href="/dashboard.html" class="header-btn header-btn-outline">My orders</a>'
+    var user = r.data.session ? r.data.session.user : null
+    var nav  = document.getElementById('header-nav')
+    if (user) {
+      var siteUrl = user.user_metadata && user.user_metadata.site_url
+      var chip = siteUrl ? '<a href="' + (siteUrl.startsWith('http') ? siteUrl : 'https://' + siteUrl) + '" target="_blank" rel="noopener" class="btn btn-ghost" style="padding:10px 20px;border-radius:50px;font-size:0.88rem;color:var(--accent);">' + siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '') + ' ↗</a>' : ''
+      nav.innerHTML = chip + '<a href="/dashboard.html" class="btn btn-ghost" style="padding:10px 20px;border-radius:50px;font-size:0.88rem;">My orders</a>'
     } else {
-      nav.innerHTML = '<a href="/login.html" class="header-btn header-btn-outline">Sign in</a>'
-        + '<a href="/login.html" class="header-btn header-btn-fill">Get started</a>'
+      nav.innerHTML = '<a href="/login.html" class="btn btn-ghost" style="padding:10px 20px;border-radius:50px;font-size:0.88rem;">Sign in</a>'
+        + '<a href="/login.html" class="btn btn-primary" style="padding:10px 22px;">Get started</a>'
     }
   })
+
+  var cursor = document.getElementById('cursor'), follower = document.getElementById('cursor-follower')
+  var mx = 0, my = 0, fx = 0, fy = 0
+  document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px' })
+  ;(function af() { fx += (mx-fx)*0.12; fy += (my-fy)*0.12; follower.style.left = fx+'px'; follower.style.top = fy+'px'; requestAnimationFrame(af) })()
+  document.querySelectorAll('a,button').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { cursor.classList.add('hovered'); follower.classList.add('hovered') })
+    el.addEventListener('mouseleave', function() { cursor.classList.remove('hovered'); follower.classList.remove('hovered') })
+  })
+
+  var navEl = document.getElementById('nav')
+  window.addEventListener('scroll', function() { navEl.classList.toggle('scrolled', window.scrollY > 20) }, { passive: true })
+
+  var hamburger = document.getElementById('hamburger'), mobileMenu = document.getElementById('mobile-menu')
+  hamburger.addEventListener('click', function() { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open') })
+  mobileMenu.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', function() { hamburger.classList.remove('open'); mobileMenu.classList.remove('open') }) })
+
+  var ro = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('revealed'); ro.unobserve(e.target) } }) }, { threshold: 0.12 })
+  document.querySelectorAll('.reveal-up').forEach(function(el) { ro.observe(el) })
 </script>
 </body>
 </html>

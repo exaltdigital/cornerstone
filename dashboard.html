@@ -3,277 +3,307 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Exalt Digital — My Orders</title>
+  <title>Cornerstone — My Orders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="newstyles.css" />
   <script src="config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #f4f4f8; color: #111;
-      font-size: 16px; line-height: 1.6; min-height: 100vh;
+    body { min-height: 100svh; display: flex; flex-direction: column; }
+
+    .dash-wrap {
+      flex: 1;
+      max-width: 1000px; margin: 0 auto; width: 100%;
+      padding: calc(var(--nav-h) + 40px) clamp(20px,5vw,60px) 60px;
     }
-    header {
-      background: #111; color: #fff;
-      padding: 1.1rem 5%;
+
+    /* Header row */
+    .dash-header-row {
       display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 0.75rem;
+      gap: 1rem; flex-wrap: wrap; margin-bottom: 6px;
     }
-    .logo { font-size: 1.3rem; font-weight: 800; text-decoration: none; color: #fff; }
-    .logo span { color: #a78bfa; }
-    .header-right { display: flex; align-items: center; gap: 1rem; }
-    .user-email { font-size: 0.82rem; color: #777; }
-    .user-site {
-      font-size: 0.82rem; font-weight: 700; color: #a78bfa;
-      text-decoration: none; background: rgba(167,139,250,0.12);
-      padding: 0.25rem 0.7rem; border-radius: 999px;
+    .dash-title {
+      font-family: var(--font-sans); font-size: 1.8rem;
+      font-weight: 800; color: var(--text);
     }
-    .user-site:hover { background: rgba(167,139,250,0.22); }
+    .dash-user-row {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .user-email-chip {
+      font-size: 0.8rem; color: var(--text-faint);
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 50px; padding: 5px 12px;
+    }
+    .user-site-chip {
+      font-size: 0.8rem; font-weight: 700; color: var(--accent-2);
+      background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2);
+      border-radius: 50px; padding: 5px 12px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .user-site-chip:hover { background: rgba(74,222,128,0.15); }
     .signout-btn {
-      background: none; border: 1px solid #444;
-      color: #aaa; padding: 0.4rem 0.9rem;
-      border-radius: 8px; cursor: pointer; font-size: 0.82rem;
-      transition: border-color .15s, color .15s;
+      font-size: 0.8rem; font-weight: 600;
+      color: var(--text-muted); background: var(--surface);
+      border: 1px solid var(--border); border-radius: 50px;
+      padding: 5px 14px; cursor: pointer; transition: var(--transition);
     }
-    .signout-btn:hover { border-color: #888; color: #fff; }
+    .signout-btn:hover { color: var(--text); border-color: var(--border-h); }
 
-    .page { max-width: 980px; margin: 0 auto; padding: 2rem 5%; }
-
-    .page-title { font-size: 1.5rem; font-weight: 900; margin-bottom: 0.2rem; }
-    .subtitle { font-size: 0.9rem; color: #777; margin-bottom: 2rem; }
+    .dash-subtitle { font-size: 0.88rem; color: var(--text-faint); margin-bottom: 32px; }
 
     /* Stats */
     .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem; margin-bottom: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px; margin-bottom: 32px;
     }
-    .stat {
-      background: #fff; border: 2px solid #e5e5e5;
-      border-radius: 12px; padding: 1.25rem;
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 22px;
     }
-    .stat-num { font-size: 1.9rem; font-weight: 900; color: #7c6fff; }
+    .stat-num {
+      font-family: var(--font-sans); font-size: 2rem;
+      font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 4px;
+    }
     .stat-label {
-      font-size: 0.75rem; color: #999; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.1rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-muted);
     }
-    .stat-sub { font-size: 0.78rem; color: #aaa; margin-top: 0.25rem; }
+    .stat-sub { font-size: 0.75rem; color: var(--text-faint); margin-top: 4px; }
 
+    /* Section head */
     .section-head {
-      font-size: 0.75rem; font-weight: 800; color: #aaa;
-      text-transform: uppercase; letter-spacing: 1px;
-      margin-bottom: 0.75rem; margin-top: 0.5rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-faint);
+      margin-bottom: 12px; margin-top: 8px;
     }
 
-    /* Order card */
-    .order-card {
-      background: #fff; border: 2px solid #e5e5e5;
-      border-radius: 16px; margin-bottom: 1.25rem;
-      overflow: hidden;
+    /* Profile card */
+    .profile-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 28px 32px; margin-bottom: 24px;
     }
-    .order-card.live   { border-color: #86efac; }
-    .order-card.pending { border-color: #fcd34d; }
+    .profile-card h3 {
+      font-family: var(--font-sans); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-faint); margin-bottom: 20px;
+    }
+    .profile-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .profile-field label {
+      display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 7px;
+    }
+    .profile-field input, .profile-field textarea {
+      width: 100%; padding: 11px 14px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); font-family: var(--font-body);
+      font-size: 0.9rem; color: var(--text); outline: none;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .profile-field input::placeholder,
+    .profile-field textarea::placeholder { color: var(--text-faint); }
+    .profile-field input:focus,
+    .profile-field textarea:focus { border-color: var(--accent); background: rgba(74,222,128,0.04); }
+    .profile-field textarea { resize: vertical; min-height: 70px; }
+    .profile-field.full { grid-column: 1 / -1; }
+    .profile-save {
+      margin-top: 16px; padding: 10px 24px;
+      background: var(--accent); color: #05050a;
+      border: none; border-radius: 50px;
+      font-family: var(--font-sans); font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; transition: filter 0.2s, transform 0.15s;
+    }
+    .profile-save:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .profile-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .profile-saved { font-size: 0.82rem; color: var(--accent); margin-left: 12px; display: none; }
+
+    /* Order cards */
+    .order-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); margin-bottom: 16px; overflow: hidden;
+      transition: border-color 0.25s;
+    }
+    .order-card.live    { border-color: rgba(74,222,128,0.4); }
+    .order-card.pending { border-color: rgba(251,191,36,0.4); }
 
     .order-top {
-      display: flex; gap: 1.25rem; padding: 1.5rem;
+      display: flex; gap: 20px; padding: 24px 28px;
       align-items: flex-start; flex-wrap: wrap;
     }
     .order-main { flex: 1; min-width: 200px; }
-    .order-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; flex-shrink: 0; }
+    .order-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
 
     .order-type-row {
-      display: flex; align-items: center; gap: 0.5rem;
-      margin-bottom: 0.4rem; flex-wrap: wrap;
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 6px; flex-wrap: wrap;
     }
     .order-type-label {
-      font-size: 0.72rem; font-weight: 800; color: #999;
-      text-transform: uppercase; letter-spacing: 1px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-faint);
     }
     .order-site {
-      font-size: 1.1rem; font-weight: 900; color: #111;
-      margin-bottom: 0.6rem;
+      font-family: var(--font-sans); font-size: 1.1rem;
+      font-weight: 800; color: var(--text); margin-bottom: 8px;
     }
-    .order-site a { color: #7c6fff; text-decoration: none; font-size: 0.85rem; font-weight: 600; margin-left: 0.4rem; }
-
-    .order-details { display: flex; flex-direction: column; gap: 0.3rem; }
+    .order-site a {
+      color: var(--accent-2); text-decoration: none;
+      font-size: 0.82rem; font-weight: 600; margin-left: 6px;
+    }
+    .order-details { display: flex; flex-direction: column; gap: 5px; }
     .detail-row {
-      font-size: 0.84rem; color: #555;
-      display: flex; gap: 0.4rem; align-items: baseline;
+      font-size: 0.82rem; color: var(--text-muted);
+      display: flex; gap: 6px; align-items: baseline;
     }
-    .detail-label { color: #bbb; min-width: 90px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+    .detail-label {
+      color: var(--text-faint); min-width: 90px;
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
 
     .badge {
-      font-size: 0.72rem; font-weight: 800;
-      padding: 0.28rem 0.7rem; border-radius: 999px;
-      white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px;
+      font-size: 0.68rem; font-weight: 700; padding: 4px 10px;
+      border-radius: 50px; white-space: nowrap;
+      text-transform: uppercase; letter-spacing: 0.05em;
     }
-    .badge-pending   { background: #fef9c3; color: #854d0e; }
-    .badge-live      { background: #dcfce7; color: #166534; }
-    .badge-completed { background: #f3f4f6; color: #6b7280; }
-    .badge-cancelled { background: #fee2e2; color: #991b1b; }
+    .badge-pending   { background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+    .badge-live      { background: rgba(74,222,128,0.12); color: var(--accent-2); border: 1px solid rgba(74,222,128,0.25); }
+    .badge-completed { background: var(--surface); color: var(--text-faint); border: 1px solid var(--border); }
+    .badge-cancelled { background: rgba(248,113,113,0.1); color: #f87171; border: 1px solid rgba(248,113,113,0.2); }
 
-    .order-amount { font-size: 1.3rem; font-weight: 900; color: #111; }
-    .order-amount-sub { font-size: 0.75rem; color: #aaa; }
-    .order-date { font-size: 0.75rem; color: #bbb; }
+    .order-amount {
+      font-family: var(--font-sans); font-size: 1.4rem;
+      font-weight: 800; color: var(--text);
+    }
+    .order-amount-sub { font-size: 0.72rem; color: var(--text-faint); }
+    .order-date { font-size: 0.72rem; color: var(--text-faint); }
 
     .tier-pill {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
-      padding: 0.2rem 0.65rem; border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 3px 10px; border-radius: 50px;
     }
-    .tier-starter   { background: #f3f4f6; color: #6b7280; }
-    .tier-growth    { background: #f0eeff; color: #7c6fff; }
-    .tier-pro       { background: #ede9fe; color: #5b21b6; }
-    .tier-authority { background: #111; color: #a78bfa; }
+    .tier-starter   { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); }
+    .tier-growth    { background: rgba(74,222,128,0.06); color: var(--accent-2); border: 1px solid rgba(74,222,128,0.2); }
+    .tier-pro       { background: rgba(74,222,128,0.1); color: var(--accent); border: 1px solid rgba(74,222,128,0.3); }
+    .tier-authority { background: var(--grad); color: #05050a; border: none; }
 
-    .plan-includes {
-      margin-top: 0.5rem;
-      display: flex; flex-wrap: wrap; gap: 0.35rem;
-    }
+    .plan-includes { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
     .include-chip {
-      background: #f5f5f5; border-radius: 999px;
-      padding: 0.18rem 0.6rem; font-size: 0.75rem; color: #666;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 50px; padding: 3px 10px;
+      font-size: 0.72rem; color: var(--text-muted);
     }
 
     /* Traffic strip */
     .traffic-strip {
-      border-top: 1px solid #f0f0f0;
-      padding: 1rem 1.5rem;
-      background: #f9f9ff;
-      display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center;
+      border-top: 1px solid var(--border); padding: 16px 28px;
+      background: rgba(74,222,128,0.025);
+      display: flex; gap: 24px; flex-wrap: wrap; align-items: center;
     }
     .traffic-strip-label {
-      font-size: 0.72rem; font-weight: 800; color: #aaa;
-      text-transform: uppercase; letter-spacing: 1px; flex-basis: 100%;
-      margin-bottom: 0.25rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--text-faint);
+      flex-basis: 100%; margin-bottom: 4px;
     }
-    .traffic-stat {
-      display: flex; flex-direction: column; align-items: flex-start;
+    .traffic-stat { display: flex; flex-direction: column; align-items: flex-start; }
+    .traffic-num {
+      font-family: var(--font-sans); font-size: 1.3rem;
+      font-weight: 800; color: var(--accent); line-height: 1;
     }
-    .traffic-num { font-size: 1.3rem; font-weight: 900; color: #7c6fff; line-height: 1; }
-    .traffic-lbl { font-size: 0.72rem; color: #aaa; margin-top: 0.15rem; }
-    .traffic-loading { font-size: 0.82rem; color: #bbb; }
+    .traffic-lbl { font-size: 0.7rem; color: var(--text-faint); margin-top: 3px; }
+    .traffic-loading { font-size: 0.82rem; color: var(--text-faint); }
     .traffic-tracker-link {
-      margin-left: auto; font-size: 0.78rem; color: #7c6fff;
-      text-decoration: none; font-weight: 700;
-      background: #f0eeff; padding: 0.3rem 0.75rem;
-      border-radius: 999px; white-space: nowrap;
+      margin-left: auto; font-size: 0.78rem; font-weight: 700;
+      color: var(--accent-2); background: rgba(74,222,128,0.08);
+      border: 1px solid rgba(74,222,128,0.2);
+      padding: 5px 14px; border-radius: 50px; white-space: nowrap;
+      text-decoration: none; transition: background 0.2s;
     }
-    .traffic-tracker-link:hover { background: #e5e0ff; }
+    .traffic-tracker-link:hover { background: rgba(74,222,128,0.15); }
 
     /* Info strip */
     .order-info-strip {
-      border-top: 1px solid #f0f0f0;
-      padding: 0.85rem 1.5rem;
-      background: #fafafa;
-      font-size: 0.83rem; color: #666;
-      display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center;
+      border-top: 1px solid var(--border); padding: 12px 28px;
+      background: rgba(255,255,255,0.015);
+      font-size: 0.82rem; color: var(--text-muted);
+      display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
     }
-    .order-info-strip.green  { background: #f0fdf4; border-color: #bbf7d0; }
-    .order-info-strip.yellow { background: #fffbeb; border-color: #fde68a; }
-    .info-chip { display: flex; align-items: center; gap: 0.35rem; font-size: 0.82rem; color: #555; }
-    .info-chip strong { color: #111; }
+    .order-info-strip.green  { background: rgba(74,222,128,0.04); border-color: rgba(74,222,128,0.15); }
+    .order-info-strip.yellow { background: rgba(251,191,36,0.04); border-color: rgba(251,191,36,0.15); }
+    .info-chip { display: flex; align-items: center; gap: 5px; font-size: 0.82rem; color: var(--text-muted); }
+    .info-chip strong { color: var(--text); }
 
-    /* Profile card */
-    .profile-card {
-      background: #fff; border: 2px solid #e5e5e5;
-      border-radius: 16px; padding: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .profile-card h3 {
-      font-size: 0.75rem; font-weight: 800; color: #aaa;
-      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.25rem;
-    }
-    .profile-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .profile-field label {
-      display: block; font-size: 0.72rem; font-weight: 700; color: #999;
-      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.35rem;
-    }
-    .profile-field input, .profile-field textarea {
-      width: 100%; padding: 0.6rem 0.9rem;
-      border: 2px solid #e5e5e5; border-radius: 9px;
-      font-size: 0.9rem; color: #111; outline: none;
-      transition: border-color .2s; background: #fafafa; font-family: inherit;
-    }
-    .profile-field input:focus, .profile-field textarea:focus { border-color: #7c6fff; background: #fff; }
-    .profile-field textarea { resize: vertical; min-height: 70px; }
-    .profile-field.full { grid-column: 1 / -1; }
-    .profile-save {
-      margin-top: 1rem; padding: 0.6rem 1.5rem;
-      background: #7c6fff; color: #fff; border: none;
-      border-radius: 9px; font-size: 0.9rem; font-weight: 700;
-      cursor: pointer; transition: opacity .15s;
-    }
-    .profile-save:hover { opacity: 0.88; }
-    .profile-save:disabled { opacity: 0.5; cursor: not-allowed; }
-    .profile-saved { font-size: 0.82rem; color: #22c55e; margin-left: 0.75rem; display: none; }
-
-    /* Empty */
+    /* Empty + loading */
     .empty {
-      text-align: center; padding: 4rem 2rem;
-      background: #fff; border: 2px solid #e5e5e5; border-radius: 16px;
+      text-align: center; padding: 56px 24px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
     }
-    .empty-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .empty h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.5rem; }
-    .empty p { font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; max-width: 380px; margin-left: auto; margin-right: auto; }
-    .empty a {
-      display: inline-block; background: #7c6fff; color: #fff;
-      padding: 0.8rem 2rem; border-radius: 10px; text-decoration: none;
-      font-weight: 800; font-size: 0.95rem;
-      box-shadow: 0 4px 16px rgba(124,111,255,0.3);
+    .empty-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .empty h3 {
+      font-family: var(--font-sans); font-size: 1.2rem;
+      font-weight: 800; margin-bottom: 8px; color: var(--text);
     }
-    .loading { text-align: center; padding: 3rem; color: #aaa; font-size: 0.9rem; }
-
-    footer {
-      background: #111; color: #555;
-      padding: 1.5rem 5%; text-align: center; font-size: 0.82rem; margin-top: 3rem;
-    }
-    footer span { color: #a78bfa; font-weight: 700; }
+    .empty p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 24px; max-width: 360px; margin-left: auto; margin-right: auto; }
+    .loading { text-align: center; padding: 48px; color: var(--text-faint); font-size: 0.9rem; }
 
     @media (max-width: 560px) {
+      .profile-fields { grid-template-columns: 1fr; }
       .order-top { flex-direction: column; }
       .order-meta { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
-      .traffic-strip { gap: 1rem; }
+      .traffic-strip { gap: 14px; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <a href="/" class="logo">Exalt <span>Digital</span></a>
-  <div class="header-right">
-    <span class="user-email" id="user-email"></span>
-    <a class="user-site" id="user-site" href="#" target="_blank" rel="noopener" style="display:none;"></a>
-    <button class="signout-btn" id="signout-btn">Sign out</button>
-  </div>
-</header>
+<div class="noise"></div>
+<div class="bg-glow bg-glow-a" style="opacity:0.5;"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
 
-<div class="page">
-  <div class="page-title">My Orders</div>
-  <p class="subtitle">Your active SEO plans and campaigns.</p>
+<nav id="nav" class="scrolled">
+  <div class="nav-inner">
+    <div class="logo"><a href="/">Cornerstone<span class="dot">.</span></a></div>
+    <div class="nav-links" style="gap:16px;">
+      <span class="user-email-chip" id="user-email"></span>
+      <a class="user-site-chip" id="user-site" href="#" target="_blank" rel="noopener" style="display:none;"></a>
+      <button class="signout-btn" id="signout-btn">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-wrap">
+  <div class="dash-header-row">
+    <div class="dash-title">My Orders</div>
+  </div>
+  <p class="dash-subtitle">Your active SEO plans and campaigns.</p>
 
   <div class="stats">
-    <div class="stat">
+    <div class="stat-card">
       <div class="stat-num" id="stat-total">—</div>
       <div class="stat-label">Total orders</div>
     </div>
-    <div class="stat">
+    <div class="stat-card">
       <div class="stat-num" id="stat-live">—</div>
       <div class="stat-label">Live now</div>
     </div>
-    <div class="stat">
+    <div class="stat-card">
       <div class="stat-num" id="stat-monthly">—</div>
       <div class="stat-label">Monthly spend</div>
       <div class="stat-sub">active SEO plans</div>
     </div>
-    <div class="stat">
+    <div class="stat-card">
       <div class="stat-num" id="stat-views">—</div>
       <div class="stat-label">Tracked visits</div>
       <div class="stat-sub">last 30 days, all sites</div>
     </div>
   </div>
 
-  <!-- Profile / site details -->
+  <!-- Profile card -->
   <div class="profile-card" id="profile-card" style="display:none;">
     <h3>Your site details</h3>
     <div class="profile-fields">
@@ -286,16 +316,16 @@
         <input type="text" id="pf-location" placeholder="e.g. Brisbane, QLD" />
       </div>
       <div class="profile-field full">
-        <label>Target keywords <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#bbb;">— what should people search to find you?</span></label>
+        <label>Target keywords <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-faint);">— what should people search to find you?</span></label>
         <input type="text" id="pf-keywords" placeholder="e.g. emergency plumber Brisbane, plumbing repairs" />
       </div>
       <div class="profile-field full">
-        <label>About your business <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#bbb;">— helps us write better content for you</span></label>
-        <textarea id="pf-about" placeholder="e.g. We're a family-owned plumbing business serving Brisbane's northside since 2009..."></textarea>
+        <label>About your business <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--text-faint);">— helps us write better content for you</span></label>
+        <textarea id="pf-about" placeholder="e.g. We're a family-owned plumbing business serving Brisbane's northside since 2009…"></textarea>
       </div>
     </div>
     <button class="profile-save" id="profile-save-btn">Save details</button>
-    <span class="profile-saved" id="profile-saved">&#10003; Saved</span>
+    <span class="profile-saved" id="profile-saved">✓ Saved</span>
   </div>
 
   <div class="section-head">Your orders</div>
@@ -304,7 +334,18 @@
   </div>
 </div>
 
-<footer>&copy; 2026 <span>Exalt Digital</span>. All rights reserved.</footer>
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 <strong style="color:var(--text);">Cornerstone</strong>. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script>
   var cfg = window.ExaltConfig
@@ -315,7 +356,6 @@
     var user = r.data.session.user
     document.getElementById('user-email').textContent = user.email
 
-    // Show site chip in header
     var meta = user.user_metadata || {}
     if (meta.site_url) {
       var el = document.getElementById('user-site')
@@ -325,31 +365,25 @@
       el.style.display = ''
     }
 
-    // Populate profile card
-    document.getElementById('pf-site').value     = meta.site_url     || ''
-    document.getElementById('pf-location').value = meta.location     || ''
-    document.getElementById('pf-keywords').value = meta.keywords     || ''
-    document.getElementById('pf-about').value    = meta.about        || ''
+    document.getElementById('pf-site').value     = meta.site_url  || ''
+    document.getElementById('pf-location').value = meta.location  || ''
+    document.getElementById('pf-keywords').value = meta.keywords  || ''
+    document.getElementById('pf-about').value    = meta.about     || ''
     document.getElementById('profile-card').style.display = ''
 
     loadOrders(user.id)
   })
 
   document.getElementById('profile-save-btn').addEventListener('click', async function() {
-    var btn = this
-    btn.disabled = true
-    btn.textContent = 'Saving…'
+    var btn = this; btn.disabled = true; btn.textContent = 'Saving\u2026'
     var siteUrl  = document.getElementById('pf-site').value.trim()
     var location = document.getElementById('pf-location').value.trim()
     var keywords = document.getElementById('pf-keywords').value.trim()
     var about    = document.getElementById('pf-about').value.trim()
     var { error } = await sb.auth.updateUser({ data: { site_url: siteUrl, location: location, keywords: keywords, about: about } })
-    btn.disabled = false
-    btn.textContent = 'Save details'
+    btn.disabled = false; btn.textContent = 'Save details'
     if (!error) {
-      var saved = document.getElementById('profile-saved')
-      saved.style.display = 'inline'
-      // Update header chip
+      var saved = document.getElementById('profile-saved'); saved.style.display = 'inline'
       if (siteUrl) {
         var el = document.getElementById('user-site')
         var display = siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '')
@@ -362,70 +396,61 @@
   })
 
   document.getElementById('signout-btn').addEventListener('click', async function() {
-    await sb.auth.signOut()
-    window.location.href = '/'
+    await sb.auth.signOut(); window.location.href = '/'
   })
 
   function formatDate(iso) {
     return new Date(iso).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
   }
-
   function monthsActive(iso) {
     var months = Math.floor((Date.now() - new Date(iso)) / (1000 * 60 * 60 * 24 * 30.5))
     if (months < 1) return 'Started this month'
     return months === 1 ? '1 month active' : months + ' months active'
   }
-
   function formatAUD(cents) {
     return 'A$' + (cents / 100).toLocaleString('en-AU', { minimumFractionDigits: 0 })
   }
-
   function badgeHTML(status) {
     var labels = { pending: 'Pending setup', live: 'Live', completed: 'Completed', cancelled: 'Cancelled' }
     return '<span class="badge badge-' + status + '">' + (labels[status] || status) + '</span>'
   }
 
+  var tierLabels = { starter: 'Seed', growth: 'Harvest', pro: 'Faithful', authority: 'Abundant' }
   function tierPill(tier) {
     if (!tier) return ''
     var cls = { starter: 'tier-starter', growth: 'tier-growth', pro: 'tier-pro', authority: 'tier-authority' }
-    return '<span class="tier-pill ' + (cls[tier] || 'tier-starter') + '">' + tier.charAt(0).toUpperCase() + tier.slice(1) + ' plan</span>'
+    var label = tierLabels[tier] || (tier.charAt(0).toUpperCase() + tier.slice(1))
+    return '<span class="tier-pill ' + (cls[tier] || 'tier-starter') + '">' + label + ' plan</span>'
   }
 
   var planIncludes = {
-    starter:   ['SEO audit', 'Technical fixes', 'Keyword targeting', 'Monthly report'],
-    growth:    ['Everything in Starter', 'On-page optimisation', 'Keyword expansion', 'Internal linking'],
-    pro:       ['Everything in Growth', 'Priority queue', 'Opportunity tracking', 'Full monthly audit'],
-    authority: ['Everything in Pro', 'Maximum effort', 'First in queue', 'Niche domination'],
+    starter:   ['7-pt SEO audit', 'GSC setup', 'Schema markup', 'Monthly report'],
+    growth:    ['Everything in Seed', '13-page optimisation', 'Keyword clusters', 'Core Web Vitals'],
+    pro:       ['Everything in Harvest', 'Unlimited pages', 'Backlink audit', 'Competitor gap analysis'],
+    authority: ['Everything in Faithful', '13-pt ranking audit', 'Local SEO domination', 'Dedicated channel'],
   }
-
   function includeChips(tier) {
     return (planIncludes[tier] || []).map(function(c) {
       return '<span class="include-chip">' + c + '</span>'
     }).join('')
   }
 
-  // Normalise a site URL to the site_id format used by embed.js (bare hostname)
   function toSiteId(siteUrl) {
     return (siteUrl || '').replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '').split('/')[0]
   }
 
-  // Fetch 30-day page_view stats for a given site_id
   async function fetchTrafficStats(siteId) {
     if (!siteId) return null
-    var since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
-    var since7 = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+    var since  = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+    var since7 = new Date(Date.now() - 7  * 24 * 60 * 60 * 1000).toISOString()
     var { data, error } = await sb
-      .from('page_views')
-      .select('session_id, created_at, path')
-      .eq('site_id', siteId)
-      .gte('created_at', since)
+      .from('page_views').select('session_id, created_at, path')
+      .eq('site_id', siteId).gte('created_at', since)
     if (error || !data) return null
     var visits7 = data.filter(function(r) { return r.created_at >= since7 }).length
     var uniqueSessions = new Set(data.map(function(r) { return r.session_id })).size
     var topPages = {}
-    data.forEach(function(r) {
-      topPages[r.path] = (topPages[r.path] || 0) + 1
-    })
+    data.forEach(function(r) { topPages[r.path] = (topPages[r.path] || 0) + 1 })
     var topPage = Object.keys(topPages).sort(function(a, b) { return topPages[b] - topPages[a] })[0] || null
     return { total30: data.length, visits7: visits7, uniqueSessions: uniqueSessions, topPage: topPage }
   }
@@ -443,7 +468,7 @@
       + '<div class="traffic-stat"><div class="traffic-num">' + stats.total30.toLocaleString() + '</div><div class="traffic-lbl">Page views</div></div>'
       + '<div class="traffic-stat"><div class="traffic-num">' + stats.visits7.toLocaleString() + '</div><div class="traffic-lbl">Last 7 days</div></div>'
       + '<div class="traffic-stat"><div class="traffic-num">' + stats.uniqueSessions.toLocaleString() + '</div><div class="traffic-lbl">Unique visitors</div></div>'
-      + (stats.topPage ? '<div class="traffic-stat"><div class="traffic-num" style="font-size:0.85rem;color:#555;">' + stats.topPage + '</div><div class="traffic-lbl">Top page</div></div>' : '')
+      + (stats.topPage ? '<div class="traffic-stat"><div class="traffic-num" style="font-size:0.82rem;color:var(--text-muted);">' + stats.topPage + '</div><div class="traffic-lbl">Top page</div></div>' : '')
       + '<a class="traffic-tracker-link" href="' + trackerPath + '" target="_blank">Full report ↗</a>'
       + '</div>'
   }
@@ -455,9 +480,9 @@
 
     var details = ''
     if (isAds) {
-      if (o.keywords) details += '<div class="detail-row"><span class="detail-label">Keywords</span>' + o.keywords + '</div>'
-      if (o.location) details += '<div class="detail-row"><span class="detail-label">Location</span>' + o.location + '</div>'
-      if (o.ad_budget_cents) details += '<div class="detail-row"><span class="detail-label">Ad budget</span>' + formatAUD(o.ad_budget_cents) + ' to Google</div>'
+      if (o.keywords)           details += '<div class="detail-row"><span class="detail-label">Keywords</span>' + o.keywords + '</div>'
+      if (o.location)           details += '<div class="detail-row"><span class="detail-label">Location</span>' + o.location + '</div>'
+      if (o.ad_budget_cents)    details += '<div class="detail-row"><span class="detail-label">Ad budget</span>' + formatAUD(o.ad_budget_cents) + ' to Google</div>'
       if (o.google_campaign_id) details += '<div class="detail-row"><span class="detail-label">Campaign ID</span>' + o.google_campaign_id + '</div>'
     } else {
       if (o.plan_tier) details += '<div class="plan-includes">' + includeChips(o.plan_tier) + '</div>'
@@ -466,17 +491,17 @@
     var infoContent = ''
     if (o.status === 'pending') {
       infoContent = isAds
-        ? '&#128640; Setting up your Google Ads campaign — live within 24 hours.'
-        : '&#128269; Reviewing your site now — you\'ll hear from us within 24 hours.'
+        ? '🚀 Setting up your Google Ads campaign — live within 24 hours.'
+        : '🔍 Reviewing your site now — you\'ll hear from us within 24 hours.'
     } else if (o.status === 'live') {
-      infoContent = '<div class="info-chip">&#128197; Started <strong>' + formatDate(o.created_at) + '</strong></div>'
-               + '<div class="info-chip">&#9200; ' + monthsActive(o.created_at) + '</div>'
-               + (!isAds ? '<div class="info-chip">&#9989; Monthly work ongoing</div>' : '')
+      infoContent = '<div class="info-chip">📅 Started <strong>' + formatDate(o.created_at) + '</strong></div>'
+               + '<div class="info-chip">⏱ ' + monthsActive(o.created_at) + '</div>'
+               + (!isAds ? '<div class="info-chip">✅ Monthly work ongoing</div>' : '')
     } else if (o.status === 'completed') {
-      infoContent = '<div class="info-chip">&#9989; Completed ' + formatDate(o.updated_at || o.created_at) + '</div>'
+      infoContent = '<div class="info-chip">✅ Completed ' + formatDate(o.updated_at || o.created_at) + '</div>'
     }
 
-    var siteId = toSiteId(o.site_url)
+    var siteId      = toSiteId(o.site_url)
     var showTraffic = !isAds && o.site_url
 
     return '<div class="order-card ' + o.status + '">'
@@ -487,7 +512,7 @@
       + (!isAds && o.plan_tier ? tierPill(o.plan_tier) : '')
       + '</div>'
       + '<div class="order-site">' + (o.site_url || '—')
-      + (o.site_url ? ' <a href="https://' + o.site_url.replace(/^https?:\/\//, '') + '" target="_blank" rel="noopener">&#8599; visit</a>' : '')
+      + (o.site_url ? ' <a href="https://' + o.site_url.replace(/^https?:\/\//, '') + '" target="_blank" rel="noopener">↗ visit</a>' : '')
       + '</div>'
       + '<div class="order-details">' + details + '</div>'
       + '</div>'
@@ -505,36 +530,31 @@
 
   async function loadOrders(userId) {
     var { data: orders, error } = await sb
-      .from('orders')
-      .select('*')
-      .eq('user_id', userId)
+      .from('orders').select('*').eq('user_id', userId)
       .order('created_at', { ascending: false })
 
     var list = document.getElementById('orders-list')
     if (error) { list.innerHTML = '<div class="loading">Could not load orders. Please refresh.</div>'; return }
 
-    // Stats
-    var liveOrders = orders.filter(function(o) { return o.status === 'live' })
+    var liveOrders  = orders.filter(function(o) { return o.status === 'live' })
     var liveSeoPlan = liveOrders.filter(function(o) { return o.type === 'seo_plan' })
     var monthlySpend = liveSeoPlan.reduce(function(sum, o) { return sum + o.amount_cents }, 0)
     document.getElementById('stat-total').textContent   = orders.length
     document.getElementById('stat-live').textContent    = liveOrders.length
     document.getElementById('stat-monthly').textContent = monthlySpend > 0 ? formatAUD(monthlySpend) : 'A$0'
 
-    // Empty state
     if (orders.length === 0) {
       document.getElementById('stat-views').textContent = '0'
       list.innerHTML = '<div class="empty">'
-        + '<div class="empty-icon">&#128200;</div>'
+        + '<div class="empty-icon">📈</div>'
         + '<h3>No orders yet</h3>'
         + '<p>Start an SEO plan or launch a one-time Google Ads campaign.</p>'
-        + '<a href="/">See plans &rarr;</a>'
+        + '<a href="/" class="btn btn-primary" style="text-decoration:none;">See plans →</a>'
         + '</div>'
       return
     }
 
-    // Fetch traffic stats for all SEO plan orders in parallel
-    var seoOrders = orders.filter(function(o) { return o.type === 'seo_plan' && o.site_url })
+    var seoOrders    = orders.filter(function(o) { return o.type === 'seo_plan' && o.site_url })
     var uniqueSiteIds = [...new Set(seoOrders.map(function(o) { return toSiteId(o.site_url) }))]
 
     var statsMap = {}
@@ -542,15 +562,27 @@
       statsMap[siteId] = await fetchTrafficStats(siteId)
     }))
 
-    // Total tracked views across all sites for the header stat
     var totalViews = Object.values(statsMap).reduce(function(sum, s) { return sum + (s ? s.total30 : 0) }, 0)
     document.getElementById('stat-views').textContent = totalViews.toLocaleString()
 
     list.innerHTML = orders.map(function(o) {
-      var siteId = toSiteId(o.site_url)
-      return renderOrder(o, statsMap[siteId] || null)
+      return renderOrder(o, statsMap[toSiteId(o.site_url)] || null)
     }).join('')
   }
+
+  /* Nav scroll */
+  var navEl = document.getElementById('nav')
+  window.addEventListener('scroll', function() { navEl.classList.toggle('scrolled', window.scrollY > 20) }, { passive: true })
+
+  /* Cursor */
+  var cursor = document.getElementById('cursor'), follower = document.getElementById('cursor-follower')
+  var mx = 0, my = 0, fx = 0, fy = 0
+  document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; cursor.style.left = mx+'px'; cursor.style.top = my+'px' })
+  ;(function af() { fx += (mx-fx)*0.12; fy += (my-fy)*0.12; follower.style.left = fx+'px'; follower.style.top = fy+'px'; requestAnimationFrame(af) })()
+  document.querySelectorAll('a,button').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { cursor.classList.add('hovered'); follower.classList.add('hovered') })
+    el.addEventListener('mouseleave', function() { cursor.classList.remove('hovered'); follower.classList.remove('hovered') })
+  })
 </script>
 </body>
 </html>

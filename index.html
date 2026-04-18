@@ -3,689 +3,603 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Exalt Digital — Ongoing SEO for Australian websites. Steady, honest improvement in search visibility. No lock-in contracts." />
-  <title>Exalt Digital — SEO for Australian Businesses</title>
+  <meta name="description" content="Cornerstone — Monthly SEO for any website. Explosive, compounding growth in search visibility. No lock-in contracts." />
+  <title>Cornerstone — SEO for Your Website</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="newstyles.css" />
   <script src="config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #f8f8f8; color: #111;
-      font-size: 18px; line-height: 1.6;
+    /* ── Scroll offset for fixed nav ── */
+    section[id] { scroll-margin-top: var(--nav-h); }
+
+    /* ── Viewport / mobile fixes ── */
+    @media (max-width: 600px) {
+      .hero-badge { font-size: 0.72rem; padding: 6px 12px; text-align: center; }
+      .hero-sub   { font-size: 1rem; }
+      .marquee-track span { font-size: 0.78rem; }
+      .boost-amount-display { font-size: 1.8rem; }
+    }
+    @media (max-width: 480px) {
+      .hero-stats { flex-direction: column; gap: 14px; align-items: center; }
+      .stat-divider { display: none; }
+      .stat { align-items: center; text-align: center; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
     }
 
-    /* ── Header ── */
-    header {
-      background: #111; color: #fff;
-      padding: 1.1rem 5%;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 1rem; flex-wrap: wrap;
+    /* ── Plan card site inputs ── */
+    .plan-input-label {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-muted); display: block;
+      margin: 16px 0 8px;
     }
-    .logo { font-size: 1.35rem; font-weight: 800; flex-shrink: 0; }
-    .logo a { text-decoration: none; color: inherit; }
-    .logo span { color: #a78bfa; }
-    .site-nav {
-      display: flex; align-items: center; gap: 1.5rem;
-      flex: 1; justify-content: center;
+    .plan-site-input {
+      width: 100%; padding: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body); font-size: 0.9rem;
+      color: var(--text); outline: none;
+      transition: border-color 0.25s, background 0.25s;
+      margin-bottom: 16px;
     }
-    .site-nav a {
-      color: #aaa; font-size: 0.9rem; font-weight: 600;
-      text-decoration: none; transition: color .15s;
-    }
-    .site-nav a:hover { color: #fff; }
-    .header-nav { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
-    .header-btn {
-      padding: 0.45rem 1.1rem; border-radius: 8px;
-      font-size: 0.9rem; font-weight: 700; cursor: pointer;
-      text-decoration: none; transition: opacity .15s;
-    }
-    .header-btn:hover { opacity: 0.8; }
-    .header-btn-outline { border: 1px solid #444; color: #ccc; background: none; }
-    .header-btn-fill { background: #7c6fff; color: #fff; border: none; }
-
-    /* ── Hero ── */
-    .hero {
-      text-align: center;
-      padding: 4.5rem 5% 3.5rem;
-      background: #fff;
-      border-bottom: 2px solid #eee;
-    }
-    .hero h1 {
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
-      font-weight: 900; line-height: 1.1;
-      margin-bottom: 1.1rem;
-    }
-    .hero h1 span { color: #7c6fff; }
-    .hero p {
-      font-size: clamp(1rem, 2.5vw, 1.2rem); color: #555;
-      max-width: 600px; margin: 0 auto 2rem; line-height: 1.7;
-    }
-    .hero-badges {
-      display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;
-    }
-    .hero-badge {
-      background: #f0eeff; color: #7c6fff;
-      padding: 0.4rem 1rem; border-radius: 999px;
-      font-size: 0.85rem; font-weight: 700;
+    .plan-site-input::placeholder { color: var(--text-faint); }
+    .plan-site-input:focus { border-color: var(--accent); background: rgba(74,222,128,0.04); }
+    .plan-site-input.err { border-color: #f87171; }
+    .site-chip {
+      font-size: 0.8rem; color: var(--accent);
+      background: rgba(74,222,128,0.08);
+      border: 1px solid rgba(74,222,128,0.2);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px; margin: 12px 0 16px;
+      font-weight: 600; display: block;
     }
 
-    /* ── Plain English explainer ── */
-    .plain-explain {
-      background: #fff;
-      padding: 3.5rem 5%;
-      border-bottom: 2px solid #eee;
+    /* ── 4-col pricing grid — wider container so cards breathe ── */
+    .pricing-section-wide {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 0 clamp(16px, 3vw, 40px);
     }
-    .plain-explain-inner {
-      max-width: 900px; margin: 0 auto;
+    .pricing-panel-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
     }
-    .plain-explain h2 {
-      text-align: center; font-size: clamp(1.5rem, 3.5vw, 2rem);
-      font-weight: 900; margin-bottom: 0.6rem;
+    @media (max-width: 1100px) { .pricing-panel-4 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px)  { .pricing-panel-4 { grid-template-columns: 1fr; } }
+
+    /* ── Authority "best" card ── */
+    .pricing-card--authority {
+      border-color: var(--accent);
+      background: linear-gradient(160deg, rgba(74,222,128,0.07), rgba(74,222,128,0.02));
+      box-shadow: 0 0 0 1px var(--accent), 0 16px 48px rgba(74,222,128,0.15);
     }
-    .plain-explain h2 span { color: #7c6fff; }
-    .plain-explain .lead {
-      text-align: center; color: #555; font-size: 1rem;
-      max-width: 620px; margin: 0 auto 2.5rem; line-height: 1.7;
+    .pricing-card--authority:hover {
+      box-shadow: 0 0 0 1px var(--accent), 0 28px 64px rgba(74,222,128,0.28);
     }
-    .explain-steps {
+    .pricing-badge { color: #05050a; } /* dark text on green gradient badge */
+
+    /* ── Explainer 3-col ── */
+    .explain-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      gap: 20px;
     }
-    .explain-step {
-      background: #f8f8f8; border-radius: 16px;
-      padding: 1.75rem 1.5rem; text-align: center;
-      border: 2px solid #eee;
+    @media (max-width: 768px) { .explain-grid { grid-template-columns: 1fr; } }
+    .explain-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px; text-align: center;
     }
-    .explain-step-icon {
+    .explain-icon {
       width: 52px; height: 52px;
-      background: #f0eeff; border-radius: 50%;
+      background: rgba(74,222,128,0.08);
+      border: 1px solid rgba(74,222,128,0.14);
+      border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; margin: 0 auto 1rem;
+      font-size: 1.4rem; margin: 0 auto 16px;
     }
-    .explain-step h3 {
-      font-size: 1rem; font-weight: 800; margin-bottom: 0.5rem; color: #111;
+    .explain-card h3 {
+      font-family: var(--font-sans); font-size: 0.95rem;
+      font-weight: 700; color: var(--text);
+      margin-bottom: 8px; line-height: 1.4;
     }
-    .explain-step p {
-      font-size: 0.9rem; color: #555; line-height: 1.65;
-    }
-    .explain-arrow {
-      display: none;
-    }
+    .explain-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
 
-    /* ── Plans ── */
-    .plans-section {
-      padding: 3.5rem 5% 2.5rem;
-      background: #f8f8f8;
-    }
-    .plans-section h2 {
-      text-align: center; font-size: clamp(1.5rem, 3vw, 1.9rem);
-      font-weight: 900; margin-bottom: 0.5rem;
-    }
-    .plans-section > p {
-      text-align: center; color: #555;
-      margin-bottom: 1rem; font-size: 1rem;
-      max-width: 600px; margin-left: auto; margin-right: auto;
-    }
-    .plans-note {
-      text-align: center; font-size: 0.85rem; color: #777;
-      margin: 0 auto 2.5rem;
-      background: #fffbf0; border: 1px solid #ffe08a;
-      border-radius: 8px; padding: 0.75rem 1.5rem;
-      max-width: 600px;
-    }
-    .plans {
+    /* ── SEO point cards ── */
+    .seo-cards {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-      max-width: 1200px;
-      margin: 0 auto;
+      gap: 20px;
     }
-    .plan {
-      background: #fff;
-      border: 2px solid #e5e5e5;
-      border-radius: 16px;
-      padding: 1.75rem 1.5rem;
-      display: flex; flex-direction: column;
-      transition: border-color .2s, box-shadow .2s;
-      position: relative;
+    @media (max-width: 900px) { .seo-cards { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .seo-cards { grid-template-columns: 1fr; } }
+    .seo-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px;
+      transition: var(--transition);
     }
-    .plan:hover { border-color: #b5aaff; box-shadow: 0 4px 24px rgba(124,111,255,0.1); }
-    .plan.best {
-      border-color: #7c6fff;
-      box-shadow: 0 6px 36px rgba(124,111,255,0.2);
+    .seo-card:hover { border-color: var(--border-h); transform: translateY(-4px); }
+    .seo-card-icon { font-size: 1.6rem; margin-bottom: 14px; }
+    .seo-card h4 {
+      font-family: var(--font-sans); font-size: 0.95rem;
+      font-weight: 700; color: var(--text);
+      margin-bottom: 8px; line-height: 1.4;
     }
-    .best-tag {
-      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-      background: #7c6fff; color: #fff;
-      font-size: 0.75rem; font-weight: 800; letter-spacing: 1px;
-      text-transform: uppercase; padding: 0.3rem 1.1rem;
-      border-radius: 999px; white-space: nowrap;
-    }
-    .plan-name {
-      font-size: 0.78rem; font-weight: 700; color: #999;
-      text-transform: uppercase; letter-spacing: 1.5px;
-      margin-bottom: 0.6rem;
-    }
-    .plan-price {
-      font-size: 3rem; font-weight: 900; line-height: 1;
-      margin-bottom: 0.2rem; display: flex; align-items: baseline; gap: 0.1rem;
-    }
-    .plan-price sup { font-size: 1.2rem; font-weight: 600; color: #777; }
-    .plan-per { font-size: 0.82rem; color: #999; margin-bottom: 1.1rem; }
-    .plan-what {
-      font-size: 0.95rem; font-weight: 700; color: #111;
-      margin-bottom: 0.9rem; padding-bottom: 0.9rem;
-      border-bottom: 1px solid #eee; line-height: 1.4;
-    }
-    .plan-features {
-      list-style: none; flex: 1; margin-bottom: 1.25rem;
-    }
-    .plan-features li {
-      font-size: 0.88rem; color: #444;
-      padding: 0.35rem 0; display: flex; gap: 0.5rem; align-items: flex-start;
-      border-bottom: 1px solid #f5f5f5; line-height: 1.5;
-    }
-    .plan-features li:last-child { border-bottom: none; }
-    .tick { color: #22c55e; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-    .input-label {
-      font-size: 0.75rem; font-weight: 700; color: #888;
-      text-transform: uppercase; letter-spacing: 1px;
-      display: block; margin-bottom: 0.35rem;
-    }
-    .site-input {
-      width: 100%; padding: 0.65rem 0.9rem;
-      border: 2px solid #e5e5e5; border-radius: 10px;
-      font-size: 0.95rem; color: #111; outline: none;
-      transition: border-color .2s; margin-bottom: 0.9rem;
-      background: #fafafa; font-family: inherit;
-    }
-    .site-input:focus { border-color: #7c6fff; background: #fff; }
-    .site-input.err { border-color: #ef4444; }
-    .plan-btn {
-      width: 100%; padding: 0.85rem;
-      border-radius: 12px; border: none; cursor: pointer;
-      font-size: 0.95rem; font-weight: 800;
-      transition: opacity .15s, transform .1s; font-family: inherit;
-    }
-    .plan-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-    .btn-outline {
-      background: #f0f0f0; color: #333;
-      border: 2px solid #e0e0e0;
-    }
-    .btn-outline:hover { border-color: #7c6fff; color: #7c6fff; background: #f5f3ff; }
-    .btn-fill {
-      background: #7c6fff; color: #fff;
-      box-shadow: 0 4px 16px rgba(124,111,255,0.35);
-    }
+    .seo-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
 
-    /* ── Plan card extras ── */
-    .plan.best {
-      background: linear-gradient(160deg, #f5f3ff 0%, #fff 55%);
-      border-width: 2px;
-    }
-    .plan.second { border-color: #c4b5fd; }
-
-    .plan-price-wrapper {
-      display: flex; align-items: flex-end; gap: 0.75rem;
-      margin-bottom: 0.2rem;
-    }
-    .plan-price-aside {
-      display: flex; flex-direction: column; gap: 0.25rem;
-      padding-bottom: 0.35rem;
-    }
-    .plan-price-was {
-      font-size: 0.82rem; color: #bbb; text-decoration: line-through;
-    }
-    .plan-saving {
-      font-size: 0.72rem; font-weight: 800;
-      background: #dcfce7; color: #166534;
-      padding: 0.2rem 0.55rem; border-radius: 999px; white-space: nowrap;
-    }
-    .plan-inner-badge {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      font-size: 0.72rem; font-weight: 800;
-      padding: 0.2rem 0.65rem; border-radius: 999px;
-      margin-bottom: 0.5rem; width: fit-content;
-    }
-    .plan-inner-badge.purple { color: #7c6fff; background: #f0eeff; }
-    .plan-inner-badge.gold   { color: #92400e; background: #fef3c7; }
-
-    .plans-footnote {
-      text-align: center; font-size: 0.82rem; color: #999;
-      margin-top: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto;
-    }
-
-    /* ── SEO Explainer (dark cards) ── */
-    .seo-explainer {
-      padding: 3.5rem 5%;
-      background: #111; color: #fff;
-    }
-    .seo-explainer-inner { max-width: 1000px; margin: 0 auto; }
-    .seo-explainer h2 {
-      font-size: clamp(1.5rem, 3vw, 1.9rem);
-      font-weight: 900; margin-bottom: 0.5rem; text-align: center;
-    }
-    .seo-explainer .seo-lead {
-      text-align: center; color: #888; font-size: 1rem; margin-bottom: 2.5rem;
-    }
-    .seo-points {
+    /* ── How it works steps ── */
+    .steps-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
+      gap: 20px;
     }
-    .seo-point {
-      background: #1a1a1a; border: 1px solid #2a2a2a;
-      border-radius: 14px; padding: 1.5rem;
+    @media (max-width: 900px) { .steps-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .steps-grid { grid-template-columns: 1fr; } }
+    .step-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px;
+      text-align: center; transition: var(--transition);
     }
-    .seo-point-icon { font-size: 1.4rem; margin-bottom: 0.75rem; }
-    .seo-point h4 { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; line-height: 1.4; }
-    .seo-point p { font-size: 0.85rem; color: #777; line-height: 1.65; }
+    .step-card:hover { border-color: var(--border-h); transform: translateY(-4px); }
+    .step-num {
+      font-family: var(--font-sans); font-size: 2.2rem;
+      font-weight: 900; color: var(--accent);
+      line-height: 1; margin-bottom: 12px;
+    }
+    .step-card h4 {
+      font-family: var(--font-sans); font-size: 0.95rem;
+      font-weight: 700; color: var(--text);
+      margin-bottom: 8px; line-height: 1.4;
+    }
+    .step-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
 
-    /* ── Google Ads boost ── */
-    .boost-section {
-      background: #0d0d1a; color: #fff;
-      padding: 3.5rem 5%;
-      border-top: 1px solid #222;
+    /* ── Boost section ── */
+    .boost-wrap { max-width: 700px; margin: 0 auto; }
+    .boost-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: clamp(24px, 4vw, 40px);
     }
-    .boost-inner { max-width: 660px; margin: 0 auto; }
-    .boost-inner h2 {
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 900; margin-bottom: 0.5rem; text-align: center;
+    .boost-note {
+      font-size: 0.82rem; color: var(--text-faint);
+      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 10px 16px;
+      margin-bottom: 24px; text-align: center;
     }
-    .boost-inner > p { font-size: 1rem; color: #888; margin-bottom: 0.6rem; text-align: center; }
-    .boost-subtext {
-      font-size: 0.85rem; color: #555;
-      background: #161616; border: 1px solid #2a2a2a;
-      border-radius: 8px; padding: 0.65rem 1rem;
-      margin-bottom: 1.75rem; text-align: center;
+    .boost-amount-display {
+      font-family: var(--font-sans); font-size: 2.4rem;
+      font-weight: 800; color: var(--accent-2); line-height: 1;
     }
-    .boost-box {
-      background: #161625; border: 2px solid #2a2a40;
-      border-radius: 16px; padding: 2rem;
+    .boost-result-card {
+      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 16px 20px; margin: 20px 0;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 1rem; flex-wrap: wrap;
     }
-    .boost-row { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
-    .boost-result {
-      background: #111; border: 1px solid #2a2a2a;
-      border-radius: 10px; padding: 1rem 1.25rem;
-      margin-bottom: 1.5rem; font-size: 0.9rem; color: #888;
+    .boost-result-num {
+      font-family: var(--font-sans); font-size: 2rem;
+      font-weight: 800; color: var(--accent);
     }
-    .boost-result-row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-    .boost-result-num { font-size: 1.6rem; font-weight: 900; color: #a78bfa; white-space: nowrap; }
-    .boost-result-note { font-size: 0.78rem; color: #444; margin-top: 0.4rem; }
-    .breakdown {
-      display: flex; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.82rem;
-    }
-    .breakdown-item {
-      flex: 1; background: #111; border: 1px solid #222;
-      border-radius: 8px; padding: 0.6rem 0.75rem; color: #666;
-    }
-    .breakdown-item strong { display: block; font-size: 1.05rem; color: #e5e5e5; }
-
-    /* ── How it works ── */
-    .how-section {
-      padding: 3.5rem 5%; background: #fff;
-      border-top: 2px solid #eee;
-    }
-    .how-inner { max-width: 960px; margin: 0 auto; }
-    .how-inner h2 {
-      font-size: clamp(1.5rem, 3vw, 1.9rem);
-      font-weight: 900; margin-bottom: 2rem; text-align: center;
-    }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-    }
-    .step {
-      background: #f8f8f8; border-radius: 14px;
-      padding: 1.5rem 1.25rem; text-align: center;
-      border: 2px solid #eee;
-    }
-    .step-num { font-size: 1.8rem; font-weight: 900; color: #7c6fff; margin-bottom: 0.5rem; }
-    .step h4 { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.4rem; line-height: 1.4; }
-    .step p { font-size: 0.85rem; color: #666; line-height: 1.6; }
-
-    /* ── Slider ── */
+    .boost-result-label { font-size: 0.9rem; color: var(--text-muted); }
+    .boost-result-note { font-size: 0.75rem; color: var(--text-faint); margin-top: 4px; }
     input[type=range] {
       -webkit-appearance: none; appearance: none;
-      width: 100%; height: 8px; border-radius: 999px; outline: none; cursor: pointer;
-      touch-action: manipulation;
+      width: 100%; height: 6px; border-radius: 999px;
+      outline: none; cursor: pointer; touch-action: manipulation; margin: 12px 0;
     }
     input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 32px; height: 32px; border-radius: 50%;
-      background: #7c6fff; cursor: pointer;
-      box-shadow: 0 2px 8px rgba(124,111,255,0.5);
+      -webkit-appearance: none; width: 28px; height: 28px;
+      border-radius: 50%; background: var(--accent); cursor: pointer;
+      box-shadow: 0 0 12px rgba(74,222,128,0.6);
     }
     input[type=range]::-moz-range-thumb {
-      width: 32px; height: 32px; border-radius: 50%; border: none;
-      background: #7c6fff; cursor: pointer;
+      width: 28px; height: 28px; border-radius: 50%;
+      border: none; background: var(--accent);
     }
-
-    /* ── Footer ── */
-    footer {
-      background: #111; color: #555;
-      padding: 2rem 5%; text-align: center; font-size: 0.85rem;
-    }
-    footer span { color: #a78bfa; font-weight: 700; }
-    .footer-links {
-      display: flex; justify-content: center; gap: 1.5rem;
-      margin-bottom: 1rem; flex-wrap: wrap;
-    }
-    .footer-links a { color: #666; text-decoration: none; font-size: 0.85rem; transition: color .15s; }
-    .footer-links a:hover { color: #aaa; }
-
-    /* ── Tablet ── */
-    @media (max-width: 960px) {
-      .plans { grid-template-columns: repeat(2, 1fr); }
-      .seo-points { grid-template-columns: repeat(2, 1fr); }
-      .steps { grid-template-columns: repeat(2, 1fr); }
-      .explain-steps { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    /* ── Mobile ── */
-    @media (max-width: 600px) {
-      body { font-size: 16px; }
-      header { padding: 0.9rem 4%; }
-      .site-nav { order: 3; width: 100%; justify-content: flex-start; gap: 1.25rem; padding-top: 0.25rem; }
-      .hero { padding: 2.5rem 4% 2rem; }
-      .plain-explain { padding: 2.5rem 4%; }
-      .explain-steps { grid-template-columns: 1fr; gap: 1rem; }
-      .plans-section { padding: 2.5rem 4% 2rem; }
-      .plans { grid-template-columns: 1fr; }
-      .plan { padding: 1.5rem; }
-      .plan-price { font-size: 2.6rem; }
-      .seo-explainer { padding: 2.5rem 4%; }
-      .seo-points { grid-template-columns: 1fr; }
-      .boost-section { padding: 2.5rem 4%; }
-      .boost-box { padding: 1.25rem; }
-      .boost-result-row { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
-      .breakdown { flex-direction: column; }
-      .how-section { padding: 2.5rem 4%; }
-      .steps { grid-template-columns: 1fr 1fr; }
-      input[type=range]::-webkit-slider-thumb { width: 40px; height: 40px; }
-    }
-    @media (max-width: 400px) {
-      .steps { grid-template-columns: 1fr; }
-      .hero-badges { gap: 0.5rem; }
+    .boost-scale {
+      display: flex; justify-content: space-between;
+      font-size: 0.7rem; color: var(--text-faint); margin-top: 4px;
     }
   </style>
 </head>
 <body>
 
-<!-- Header -->
-<header>
-  <div class="logo"><a href="/">Exalt <span>Digital</span></a></div>
-  <nav class="site-nav">
-    <a href="/about.html">About</a>
-    <a href="/faq.html">FAQ</a>
-    <a href="/contact.html">Contact</a>
-  </nav>
-  <nav class="header-nav" id="header-nav">
-    <a href="/login.html" class="header-btn header-btn-outline">Sign in</a>
-  </nav>
-</header>
+<!-- Noise overlay -->
+<div class="noise"></div>
+
+<!-- Ambient glows -->
+<div class="bg-glow bg-glow-a"></div>
+<div class="bg-glow bg-glow-b"></div>
+
+<!-- Custom cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<!-- Nav -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="logo">Cornerstone<span class="dot">.</span></div>
+    <div class="nav-links">
+      <a href="/about.html">About</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="/contact.html">Contact</a>
+      <div id="header-nav" style="display:flex;align-items:center;gap:10px;">
+        <a href="/login.html" class="btn btn-ghost" style="padding:10px 20px;border-radius:50px;font-size:0.88rem;">Sign in</a>
+      </div>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/faq.html">FAQ</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+    <li><a href="/login.html" style="color:var(--accent);">Get started</a></li>
+  </ul>
+</div>
 
 <!-- Hero -->
-<div class="hero">
-  <h1>More people finding<br><span>your website on Google.</span></h1>
-  <p>Every month we improve your site so it shows up in more searches. No lock-in contracts. Plain English updates. Real, ongoing work.</p>
-  <div class="hero-badges">
-    <span class="hero-badge">Monthly SEO</span>
-    <span class="hero-badge">Google Ads campaigns</span>
-    <span class="hero-badge">Cancel any time</span>
-    <span class="hero-badge">Australian business</span>
+<section id="hero">
+  <div class="hero-bg">
+    <canvas id="particles"></canvas>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      Hobart-based &middot; serving AU, UK &amp; beyond
+    </div>
+    <h1 class="hero-title">
+      <span class="line">Your website.</span>
+      <span class="line gradient-text">Found. Ranked. Growing.</span>
+    </h1>
+    <p class="hero-sub">Every month we do the technical SEO work that compounds into explosive, lasting growth — for any website, any niche, any size. From a 7-point foundation audit all the way to full authority domination.</p>
+    <div class="hero-actions">
+      <a href="#pricing" class="btn btn-primary">See plans &amp; pricing</a>
+      <a href="/about.html" class="btn btn-ghost">How it works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">7<span class="stat-suffix">×</span></span>
+        <span class="stat-label">avg. ranking lift</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">13<span class="stat-suffix">+</span></span>
+        <span class="stat-label">industries served</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">100<span class="stat-suffix">%</span></span>
+        <span class="stat-label">transparent reporting</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span>Technical SEO</span><span class="sep">◆</span>
+    <span>Core Web Vitals</span><span class="sep">◆</span>
+    <span>Schema Markup</span><span class="sep">◆</span>
+    <span>Keyword Clusters</span><span class="sep">◆</span>
+    <span>Local SEO</span><span class="sep">◆</span>
+    <span>Backlink Audits</span><span class="sep">◆</span>
+    <span>Entity Building</span><span class="sep">◆</span>
+    <span>GSC Integration</span><span class="sep">◆</span>
+    <span>Page Speed</span><span class="sep">◆</span>
+    <span>Structured Data</span><span class="sep">◆</span>
+    <span>Competitor Gap Analysis</span><span class="sep">◆</span>
+    <span>Content Strategy</span><span class="sep">◆</span>
+    <span>Technical SEO</span><span class="sep">◆</span>
+    <span>Core Web Vitals</span><span class="sep">◆</span>
+    <span>Schema Markup</span><span class="sep">◆</span>
+    <span>Keyword Clusters</span><span class="sep">◆</span>
+    <span>Local SEO</span><span class="sep">◆</span>
+    <span>Backlink Audits</span><span class="sep">◆</span>
+    <span>Entity Building</span><span class="sep">◆</span>
+    <span>GSC Integration</span><span class="sep">◆</span>
+    <span>Page Speed</span><span class="sep">◆</span>
+    <span>Structured Data</span><span class="sep">◆</span>
+    <span>Competitor Gap Analysis</span><span class="sep">◆</span>
+    <span>Content Strategy</span><span class="sep">◆</span>
   </div>
 </div>
 
-<!-- Plain English explainer -->
-<div class="plain-explain">
-  <div class="plain-explain-inner">
-    <h2>Is your website <span>invisible on Google?</span></h2>
-    <p class="lead">Most small business websites don't show up when people search Google — not because the business isn't good, but because Google doesn't know enough about them yet. That's exactly what we fix.</p>
-    <div class="explain-steps">
-      <div class="explain-step">
-        <div class="explain-step-icon">&#128270;</div>
+<!-- What is SEO -->
+<section id="about">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">The honest explainer</p>
+      <h2 class="section-title">Is your website <em>invisible on Google?</em></h2>
+      <p style="color:var(--text-muted);max-width:560px;margin:16px auto 0;font-size:1rem;line-height:1.75;">Most websites — personal sites, blogs, portfolios, small operations — don't show up in search. Not because they're not good, but because Google doesn't have a clear enough picture of what they are. That's exactly what we fix.</p>
+    </div>
+    <div class="explain-grid">
+      <div class="explain-card reveal-up">
+        <div class="explain-icon">🔍</div>
         <h3>Right now, Google may not know your site</h3>
-        <p>Think of Google as a giant library. If your site isn't set up correctly, it's like having a book with no title, no category, and no shelf. Nobody finds it — even if it's great.</p>
+        <p>Think of Google as a giant library. If your site isn't set up correctly, it's like a book with no title, no category, and no shelf. Nobody finds it — even if it's great.</p>
       </div>
-      <div class="explain-step">
-        <div class="explain-step-icon">&#128295;</div>
+      <div class="explain-card reveal-up" data-delay="100">
+        <div class="explain-icon">🔧</div>
         <h3>Every month, we make it clearer</h3>
-        <p>We do the behind-the-scenes work that helps Google understand what your business does, who it's for, and why it should show up when someone searches for it.</p>
+        <p>We do the behind-the-scenes work — starting with 7 core technical fixes — that helps Google understand exactly what your business does, who it's for, and why it should rank.</p>
       </div>
-      <div class="explain-step">
-        <div class="explain-step-icon">&#128200;</div>
+      <div class="explain-card reveal-up" data-delay="200">
+        <div class="explain-icon">📈</div>
         <h3>Over time, more people find you</h3>
-        <p>As Google gets a better picture of your site, it starts showing it to more people. The results build slowly — but they stick around and keep growing.</p>
+        <p>As Google gets a better picture of your site, it shows it to more people. Results build slowly — but they compound month after month, and they stick.</p>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- Monthly Plans -->
-<div class="plans-section">
-  <h2>Simple monthly plans</h2>
-  <p>We work on your site every month. Pick the level that suits your budget.</p>
-
-  <div class="plans-note">
-    All plans are month-to-month &mdash; no lock-in, no hidden fees. Work starts within 24 hours.
+<!-- Founder strip -->
+<section style="padding:0 0 clamp(40px,6vw,80px);">
+  <div class="container">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:clamp(28px,4vw,48px);display:flex;align-items:center;gap:clamp(24px,4vw,48px);flex-wrap:wrap;" class="reveal-up">
+      <div style="width:72px;height:72px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:1.4rem;font-weight:900;color:#05050a;flex-shrink:0;">ED</div>
+      <div style="flex:1;min-width:220px;">
+        <p style="font-family:var(--font-sans);font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-2);margin-bottom:8px;">About the team</p>
+        <p style="font-size:0.95rem;color:var(--text-muted);line-height:1.75;max-width:620px;">Cornerstone was founded by an Israeli-born developer now based in Hobart, Tasmania. After growing websites across Israel, Europe, and Australia, our team built this service around one conviction: consistent, honest monthly SEO work compounds into explosive, lasting growth — and every website deserves access to it.</p>
+      </div>
+      <a href="/about.html" class="btn btn-ghost" style="flex-shrink:0;white-space:nowrap;">Meet the team &rarr;</a>
+    </div>
   </div>
+</section>
 
-  <div class="plans">
-
-    <!-- Starter -->
-    <div class="plan">
-      <div class="plan-name">Starter</div>
-      <div class="plan-price"><sup>A$</sup>100</div>
-      <div class="plan-per">per month &middot; cancel any time</div>
-      <div class="plan-what">Get your site set up properly for Google</div>
-      <ul class="plan-features">
-        <li><span class="tick">✓</span> Check your whole site and find what's holding it back</li>
-        <li><span class="tick">✓</span> Fix issues that stop Google from reading your site</li>
-        <li><span class="tick">✓</span> Set up your pages to appear in the right searches</li>
-        <li><span class="tick">✓</span> Improve your key pages so more people can find them</li>
-        <li><span class="tick">✓</span> Monthly update on what was done — plain English</li>
-      </ul>
-      <label class="input-label">Your website address</label>
-      <input type="text" class="site-input" placeholder="e.g. www.mywebsite.com.au" />
-      <button class="plan-btn btn-outline" data-price="100">Get started &mdash; A$100/mo</button>
+<!-- Pricing -->
+<section id="pricing">
+  <div class="pricing-section-wide">
+    <div class="section-header reveal-up">
+      <p class="section-eyebrow">Simple, honest pricing</p>
+      <h2 class="section-title">Pick your level of <em>growth</em></h2>
+      <p style="color:var(--text-muted);max-width:520px;margin:16px auto 0;font-size:1rem;">Month-to-month &mdash; no lock-in, no hidden fees. Work starts within 24 hours of sign-up.</p>
     </div>
 
-    <!-- Growth -->
-    <div class="plan second">
-      <div class="plan-inner-badge purple">&#11088; Exceptional value</div>
-      <div class="plan-name">Growth</div>
-      <div class="plan-price"><sup>A$</sup>200</div>
-      <div class="plan-per">per month &middot; cancel any time</div>
-      <div class="plan-what">Full ongoing SEO for less than $7 a day</div>
-      <ul class="plan-features">
-        <li><span class="tick">✓</span> Everything in Starter</li>
-        <li><span class="tick">✓</span> Monthly on-page optimisation across your entire site</li>
-        <li><span class="tick">✓</span> Keyword expansion — target more search queries over time</li>
-        <li><span class="tick">✓</span> Internal linking improvements to boost page authority</li>
-        <li><span class="tick">✓</span> Performance-based adjustments every month</li>
-      </ul>
-      <label class="input-label">Your website address</label>
-      <input type="text" class="site-input" placeholder="e.g. www.mywebsite.com.au" />
-      <button class="plan-btn btn-outline" data-price="200">Get started &mdash; A$200/mo</button>
-    </div>
+    <div class="pricing-panel-4">
 
-    <!-- Pro -->
-    <div class="plan best">
-      <div class="best-tag">&#11088; Best Seller &middot; Most Popular</div>
-      <div class="plan-inner-badge gold">Limited price &mdash; was A$600</div>
-      <div class="plan-name">Pro</div>
-      <div class="plan-price-wrapper">
-        <div class="plan-price"><sup>A$</sup>400</div>
-        <div class="plan-price-aside">
-          <div class="plan-price-was">A$600/mo</div>
-          <div class="plan-saving">&#10003; Save A$200/mo</div>
+      <!-- Seed ($100) -->
+      <div class="pricing-card reveal-up">
+        <div class="pricing-tier" style="margin-top:36px;">Seed</div>
+        <div class="pricing-price">
+          <span class="price-currency">A$</span>
+          <span class="price-amount">100</span>
+          <span class="price-period">/mo</span>
         </div>
+        <p class="pricing-desc">Every great thing begins with a seed. This is the technical foundation — the soil prepared, the ground made ready for everything that follows.</p>
+        <ul class="pricing-features">
+          <li>7-point technical audit: title tags, meta descriptions, H1s, canonicals, sitemap, robots.txt &amp; schema check</li>
+          <li>Google Search Console setup &amp; property verification</li>
+          <li>XML sitemap generation &amp; submission to Google</li>
+          <li>robots.txt creation or repair</li>
+          <li>Title tag &amp; meta rewrite for up to 5 key pages</li>
+          <li>LocalBusiness schema markup implementation</li>
+          <li>Monthly plain-English progress report</li>
+        </ul>
+        <label class="plan-input-label">Your website address</label>
+        <input type="text" class="plan-site-input" placeholder="e.g. yourwebsite.com" />
+        <button class="btn btn-ghost btn-full pricing-btn" data-price="100">Get started &mdash; A$100/mo</button>
       </div>
-      <div class="plan-per">per month &middot; cancel any time</div>
-      <div class="plan-what">Agency-level SEO for A$13 a day — this is the one</div>
-      <ul class="plan-features">
-        <li><span class="tick">✓</span> Everything in Growth</li>
-        <li><span class="tick">✓</span> High-volume on-page and technical SEO every month</li>
-        <li><span class="tick">✓</span> Aggressive keyword expansion across your entire site</li>
-        <li><span class="tick">✓</span> Opportunity-driven optimisation — we don't wait, we act</li>
-        <li><span class="tick">✓</span> Priority queue — your site is always worked on first</li>
-        <li><span class="tick">✓</span> Full monthly audit: rankings, changes, next 30-day plan</li>
-      </ul>
-      <label class="input-label">Your website address</label>
-      <input type="text" class="site-input" placeholder="e.g. www.mywebsite.com.au" />
-      <button class="plan-btn btn-fill" data-price="400">Get started &mdash; A$400/mo</button>
-    </div>
 
-    <!-- Authority -->
-    <div class="plan">
-      <div class="plan-name">Authority</div>
-      <div class="plan-price-wrapper">
-        <div class="plan-price"><sup>A$</sup>600</div>
-        <div class="plan-price-aside">
-          <div class="plan-price-was">A$800/mo</div>
-          <div class="plan-saving">&#10003; Save A$200/mo</div>
+      <!-- Harvest ($200) -->
+      <div class="pricing-card reveal-up" data-delay="100">
+        <div class="pricing-tier" style="margin-top:36px;">Harvest</div>
+        <div class="pricing-price">
+          <span class="price-currency">A$</span>
+          <span class="price-amount">200</span>
+          <span class="price-period">/mo</span>
         </div>
+        <p class="pricing-desc">The harvest is plentiful. Full ongoing SEO for less than $7 a day — consistent monthly work that turns your site's potential into real, growing visibility.</p>
+        <ul class="pricing-features">
+          <li>Everything in Seed</li>
+          <li>On-page optimisation across your whole site (up to 13 pages/month)</li>
+          <li>Keyword cluster mapping aligned to real search intent</li>
+          <li>Internal link restructure to spread page authority</li>
+          <li>Image alt text optimisation site-wide</li>
+          <li>Core Web Vitals remediation (LCP, CLS &amp; FID targets)</li>
+          <li>Google Business Profile setup &amp; optimisation</li>
+          <li>Monthly GSC report with keyword movement tracking</li>
+        </ul>
+        <label class="plan-input-label">Your website address</label>
+        <input type="text" class="plan-site-input" placeholder="e.g. yourwebsite.com" />
+        <button class="btn btn-ghost btn-full pricing-btn" data-price="200">Get started &mdash; A$200/mo</button>
       </div>
-      <div class="plan-per">per month &middot; cancel any time</div>
-      <div class="plan-what">Maximum effort to dominate your niche in search</div>
-      <ul class="plan-features">
-        <li><span class="tick">✓</span> Everything in Pro</li>
-        <li><span class="tick">✓</span> The highest level of monthly SEO work we offer</li>
-        <li><span class="tick">✓</span> First in our queue — fastest turnaround</li>
-        <li><span class="tick">✓</span> Aggressive expansion into every relevant search</li>
-        <li><span class="tick">✓</span> Built for businesses that want to be the top result</li>
-      </ul>
-      <label class="input-label">Your website address</label>
-      <input type="text" class="site-input" placeholder="e.g. www.mywebsite.com.au" />
-      <button class="plan-btn btn-outline" data-price="600">Get started &mdash; A$600/mo</button>
+
+      <!-- Faithful ($400) -->
+      <div class="pricing-card reveal-up" data-delay="200">
+        <div class="pricing-tier" style="margin-top:36px;">Faithful</div>
+        <div class="pricing-price">
+          <span class="price-currency">A$</span>
+          <span class="price-amount">400</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <p class="pricing-desc"><em style="font-style:normal;color:var(--accent-2);">"Well done, good and faithful servant — you have been faithful with a few things; I will put you in charge of many."</em> This is where transformation happens. Agency-level SEO, carried out with complete faithfulness every month. Trusted with your site, we deliver much.</p>
+        <ul class="pricing-features">
+          <li>Everything in Harvest</li>
+          <li>Unlimited page optimisation — your entire site tended and cultivated monthly</li>
+          <li>FAQ, Product &amp; Review schema — structured truth, clearly presented to search engines</li>
+          <li>Backlink profile audit + disavow file recommendations</li>
+          <li>Top-3 competitor gap analysis with a clear, ranked action plan</li>
+          <li>Page speed stack: lazy loading, image compression, cache headers</li>
+          <li>1 fully researched content brief per month</li>
+          <li>Priority work queue + 30-day forward SEO roadmap — our covenant, renewed monthly</li>
+        </ul>
+        <label class="plan-input-label">Your website address</label>
+        <input type="text" class="plan-site-input" placeholder="e.g. yourwebsite.com" />
+        <button class="btn btn-ghost btn-full pricing-btn" data-price="400">Get started &mdash; A$400/mo</button>
+      </div>
+
+      <!-- Exalt ($600) — BEST -->
+      <div class="pricing-card pricing-card--authority reveal-up" data-delay="300">
+        <div class="pricing-badge">🚀 Explosive Growth</div>
+        <div class="pricing-tier">Abundant</div>
+        <div class="pricing-price">
+          <span class="price-currency">A$</span>
+          <span class="price-amount">600</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <p class="pricing-desc"><em style="font-style:normal;color:var(--accent-2);">"I have come that they may have life, and have it more abundantly."</em><br> The pinnacle — maximum effort, maximum output. Built for websites called to rise above and become the undeniable, authoritative voice in their niche. Grace upon grace, month after month, without ceasing.</p>
+        <ul class="pricing-features">
+          <li>Everything in Faithful</li>
+          <li>Full local SEO dominance — citations, NAP consistency, map pack targeting</li>
+          <li>13-point monthly ranking audit — 13 pillars of authority, tracked without exception</li>
+          <li>Topical authority content strategy — become the light on the hill in your niche</li>
+          <li>Conversion rate optimisation on your highest-traffic pages</li>
+          <li>Monthly competitor intelligence report — we watch so you don't have to</li>
+          <li>Hreflang &amp; international SEO configuration if applicable</li>
+          <li>Dedicated Slack or WhatsApp channel — direct access, always</li>
+          <li>Always first in our work queue — you are our first fruits, guaranteed</li>
+        </ul>
+        <label class="plan-input-label">Your website address</label>
+        <input type="text" class="plan-site-input" placeholder="e.g. yourwebsite.com" />
+        <button class="btn btn-primary btn-full pricing-btn" data-price="600">Get started &mdash; A$600/mo &rarr;</button>
+      </div>
+
     </div>
 
+    <p style="text-align:center;font-size:0.82rem;color:var(--text-faint);margin-top:28px;">After sign-up we review your site and get to work. You'll hear from us within 24 hours.</p>
   </div>
+</section>
 
-  <p class="plans-footnote">
-    After sign-up we review your site and get started. You'll hear from us within 24 hours.
-  </p>
-</div>
-
-<!-- SEO explainer (dark) -->
-<div class="seo-explainer">
-  <div class="seo-explainer-inner">
-    <h2>Why SEO takes time — and why it's worth it</h2>
-    <p class="seo-lead">A few honest things you should know before getting started.</p>
-    <div class="seo-points">
-      <div class="seo-point">
-        <div class="seo-point-icon">&#128270;</div>
+<!-- SEO Explainer -->
+<section>
+  <div class="container">
+    <div class="section-header reveal-up">
+      <p class="section-eyebrow">Honest expectations</p>
+      <h2 class="section-title">Why SEO takes time &mdash; <em>and why it's worth it</em></h2>
+    </div>
+    <div class="seo-cards">
+      <div class="seo-card reveal-up">
+        <div class="seo-card-icon">🔍</div>
         <h4>Google has to be able to read your site first</h4>
-        <p>Before you can appear in search results, Google needs to understand your pages. We fix the technical issues that get in the way — things most people never even know exist.</p>
+        <p>Before you can rank, Google needs to understand your pages. We fix the technical blockers — issues most business owners never even know exist — within the first 7 days.</p>
       </div>
-      <div class="seo-point">
-        <div class="seo-point-icon">&#127919;</div>
-        <h4>Your site needs to match what people actually search</h4>
-        <p>We look at the real words and phrases people type into Google, then make sure your pages are aligned with those searches — so Google has a reason to show your site.</p>
+      <div class="seo-card reveal-up" data-delay="100">
+        <div class="seo-card-icon">🎯</div>
+        <h4>Your pages must match what people actually search</h4>
+        <p>We map the exact phrases people type into Google, then align your pages to those queries — so Google has a clear, specific reason to show your site.</p>
       </div>
-      <div class="seo-point">
-        <div class="seo-point-icon">&#128200;</div>
-        <h4>Every improvement builds on the last one</h4>
-        <p>Unlike ads, SEO work sticks around. Each month we build on what was done before. The effect compounds — after 6 months, your site is noticeably more visible than it was on day one.</p>
+      <div class="seo-card reveal-up" data-delay="200">
+        <div class="seo-card-icon">📈</div>
+        <h4>Every improvement builds on the last</h4>
+        <p>Unlike ads, SEO compounds. Each month of work builds on everything before it. After 6 months the effect is exponential — this is where explosive growth becomes visible.</p>
       </div>
-      <div class="seo-point">
-        <div class="seo-point-icon">&#128337;</div>
-        <h4>Results usually take 3–6 months — and that's normal</h4>
-        <p>We'll be straight with you: SEO is not fast. But the sites that stay consistent are the ones that end up being found by far more people. We do the work every month so you don't have to think about it.</p>
+      <div class="seo-card reveal-up" data-delay="300">
+        <div class="seo-card-icon">⏱</div>
+        <h4>Real results take 3–6 months — and that's normal</h4>
+        <p>We'll be straight with you: SEO isn't instant. But sites that stay consistent are the ones that end up dominating their market. We do the work every month so you don't have to think about it.</p>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- One-time Google Ads boost -->
-<div class="boost-section">
-  <div class="boost-inner">
-    <h2>Need visitors right now?</h2>
-    <p>While your SEO builds up, a one-time Google Ads campaign puts your site in front of real searchers immediately.</p>
-    <div class="boost-subtext">
-      &#128640; Most of your budget goes directly to Google Ads — we just set it all up and run it for you.
-    </div>
-    <div class="boost-box">
-      <div class="boost-row">
-        <div>
-          <label class="input-label" style="color:#777;">Your website address</label>
-          <input type="text" class="site-input" id="boost-site" placeholder="e.g. www.mywebsite.com.au" style="background:#0d0d1a;border-color:#2a2a40;color:#fff;" />
+<!-- Google Ads Boost -->
+<section>
+  <div class="container">
+    <div class="boost-wrap">
+      <div class="section-header reveal-up">
+        <p class="section-eyebrow">Instant traffic</p>
+        <h2 class="section-title">Need visitors <em>right now?</em></h2>
+        <p style="color:var(--text-muted);max-width:500px;margin:16px auto 0;font-size:1rem;line-height:1.7;">While your SEO builds momentum, a one-time Google Ads campaign puts your site in front of real searchers immediately.</p>
+      </div>
+      <div class="boost-card reveal-up">
+        <div class="boost-note">🚀 Most of your budget goes directly to Google Ads — we handle setup, targeting, and launch.</div>
+        <div style="margin-bottom:20px;">
+          <label class="plan-input-label">Your website address</label>
+          <input type="text" class="plan-site-input" id="boost-site" placeholder="e.g. yourwebsite.com" />
         </div>
-        <div>
-          <label class="input-label" style="color:#777;">Your campaign budget (AUD)</label>
-          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem;flex-wrap:wrap;">
-            <div style="font-size:2rem;font-weight:900;color:#a78bfa;">A$<span id="boost-display">300</span></div>
-            <div style="font-size:0.82rem;color:#555;">total budget</div>
+        <div style="margin-bottom:20px;">
+          <label class="plan-input-label">Campaign budget (AUD)</label>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:8px;flex-wrap:wrap;">
+            <div class="boost-amount-display">A$<span id="boost-display">300</span></div>
+            <div style="font-size:0.82rem;color:var(--text-faint);">total budget</div>
           </div>
-          <input type="range" id="boost-amount" min="10" max="1500" value="300" step="10"
-            style="background:linear-gradient(90deg,#7c6fff 13%,rgba(255,255,255,0.07) 13%);margin-bottom:0.5rem;" />
-          <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#444;">
+          <input type="range" id="boost-amount" min="10" max="1500" value="300" step="10" />
+          <div class="boost-scale">
             <span>A$10</span><span>A$500</span><span>A$1,000</span><span>A$1,500</span>
           </div>
         </div>
-      </div>
-
-      <div class="boost-result">
-        <div class="boost-result-row">
-          <span>Estimated new visitors to your site</span>
-          <span class="boost-result-num" id="boost-visitors">30</span>
+        <div class="boost-result-card">
+          <div>
+            <div class="boost-result-label">Estimated new visitors to your site</div>
+            <div class="boost-result-note">Estimates only. Actual results vary by industry, keywords, and location.</div>
+          </div>
+          <div class="boost-result-num" id="boost-visitors">300</div>
         </div>
-        <div class="boost-result-note">Estimates only. Actual results vary by industry, keywords, and location.</div>
+        <button class="btn btn-primary btn-full" id="boost-btn" style="font-size:1rem;">Launch My Google Ads Campaign &rarr;</button>
       </div>
-
-      <button class="plan-btn btn-fill" id="boost-btn" style="font-size:1rem;">Launch My Google Ads Campaign &rarr;</button>
     </div>
   </div>
-</div>
+</section>
 
 <!-- How it works -->
-<div class="how-section">
-  <div class="how-inner">
-    <h2>How it works</h2>
-    <div class="steps">
-      <div class="step">
+<section>
+  <div class="container">
+    <div class="section-header reveal-up">
+      <p class="section-eyebrow">The process</p>
+      <h2 class="section-title">How it <em>works</em></h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal-up">
         <div class="step-num">1</div>
-        <h4>Choose a plan and enter your website</h4>
+        <h4>Choose a plan &amp; enter your website</h4>
         <p>Takes less than two minutes. No phone call, no consultation required.</p>
       </div>
-      <div class="step">
+      <div class="step-card reveal-up" data-delay="100">
         <div class="step-num">2</div>
-        <h4>We look at your site within 24 hours</h4>
-        <p>We review your site and figure out the best starting points based on your plan.</p>
+        <h4>We review your site within 24 hours</h4>
+        <p>We dig into your site and identify the highest-impact starting points for your plan level.</p>
       </div>
-      <div class="step">
+      <div class="step-card reveal-up" data-delay="200">
         <div class="step-num">3</div>
         <h4>Work starts and repeats every month</h4>
-        <p>Real improvements, every month — no skipped months, no "set and forget".</p>
+        <p>Real improvements, every single month — no skipped cycles, no "set and forget", ever.</p>
       </div>
-      <div class="step">
+      <div class="step-card reveal-up" data-delay="300">
         <div class="step-num">4</div>
-        <h4>You get a plain English update</h4>
-        <p>We tell you exactly what we did, what changed, and what we're doing next. No confusion.</p>
+        <h4>You get a plain-English update</h4>
+        <p>We tell you exactly what we did, what changed, and what we're tackling next. No confusion, no jargon.</p>
       </div>
     </div>
   </div>
-</div>
+</section>
 
+<!-- Footer -->
 <footer>
-  <div class="footer-links">
-    <a href="/about.html">About</a>
-    <a href="/faq.html">FAQ</a>
-    <a href="/contact.html">Contact</a>
-    <a href="/dashboard.html">My orders</a>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 <strong style="color:var(--text);">Cornerstone</strong>. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="/about.html">About</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/dashboard.html">My orders</a>
+      </div>
+    </div>
   </div>
-  &copy; 2026 <span>Exalt Digital</span>. All rights reserved.
 </footer>
 
 <script>
+  /* ── Supabase + Stripe ── */
   var cfg = window.ExaltConfig
   var sb  = window.supabase.createClient(cfg.supabase.url, cfg.supabase.anonKey)
-
-  // ── Auth state → update header nav ───────────────────────────
   var currentUser = null
 
   sb.auth.getSession().then(function(r) {
@@ -693,36 +607,30 @@
     renderNav()
     if (currentUser) {
       var siteUrl = currentUser.user_metadata && currentUser.user_metadata.site_url
-      // Replace site input + label on plan cards with a static "ordering for" chip
-      document.querySelectorAll('.plan').forEach(function(card) {
-        var label = card.querySelector('.input-label')
-        var inp   = card.querySelector('.site-input')
+      document.querySelectorAll('.pricing-card').forEach(function(card) {
+        var label = card.querySelector('.plan-input-label')
+        var inp   = card.querySelector('.plan-site-input')
         if (!label || !inp) return
         if (siteUrl) {
           var chip = document.createElement('div')
-          chip.style.cssText = 'font-size:0.8rem;color:#7c6fff;background:#f0eeff;border-radius:8px;padding:0.45rem 0.75rem;margin-bottom:0.9rem;font-weight:600;'
+          chip.className = 'site-chip'
           chip.textContent = '↗ ' + siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '')
           label.parentNode.insertBefore(chip, label)
-          label.remove()
-          inp.remove()
+          label.remove(); inp.remove()
         } else {
-          // No site set — update label to prompt them
-          label.textContent = 'Your website (save in dashboard to skip this next time)'
+          label.textContent = 'Your website (save in dashboard to skip next time)'
         }
       })
-      // Boost section: show site chip or pre-fill input
       var boostSiteInp = document.getElementById('boost-site')
       if (boostSiteInp) {
         if (siteUrl) {
           var boostLabel = boostSiteInp.previousElementSibling
-          var boostChip = document.createElement('div')
-          boostChip.style.cssText = 'font-size:0.8rem;color:#a78bfa;background:rgba(167,139,250,0.12);border-radius:8px;padding:0.45rem 0.75rem;margin-bottom:0.9rem;font-weight:600;'
+          var boostChip  = document.createElement('div')
+          boostChip.className = 'site-chip'
           boostChip.textContent = '↗ ' + siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '')
           boostSiteInp.parentNode.insertBefore(boostChip, boostLabel || boostSiteInp)
-          if (boostLabel && boostLabel.classList && boostLabel.classList.contains('input-label')) boostLabel.remove()
+          if (boostLabel && boostLabel.classList && boostLabel.classList.contains('plan-input-label')) boostLabel.remove()
           boostSiteInp.remove()
-        } else {
-          boostSiteInp.value = ''
         }
       }
     }
@@ -732,35 +640,18 @@
     var nav = document.getElementById('header-nav')
     if (currentUser) {
       var siteUrl = currentUser.user_metadata && currentUser.user_metadata.site_url
-      var siteChip = siteUrl ? '<a href="' + (siteUrl.startsWith('http') ? siteUrl : 'https://' + siteUrl) + '" target="_blank" rel="noopener" class="header-btn header-btn-outline" style="color:#a78bfa;border-color:#4c3f8a;">' + siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '') + ' ↗</a>' : ''
-      nav.innerHTML = siteChip + '<a href="/dashboard.html" class="header-btn header-btn-outline">My orders</a>'
+      var siteChip = siteUrl
+        ? '<a href="' + (siteUrl.startsWith('http') ? siteUrl : 'https://' + siteUrl) + '" target="_blank" rel="noopener" class="btn btn-ghost" style="padding:10px 20px;border-radius:50px;font-size:0.88rem;color:var(--accent);">'
+            + siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '') + ' ↗</a>'
+        : ''
+      nav.innerHTML = siteChip + '<a href="/dashboard.html" class="btn btn-ghost" style="padding:10px 20px;border-radius:50px;font-size:0.88rem;">My orders</a>'
     } else {
-      nav.innerHTML = '<a href="/login.html" class="header-btn header-btn-outline">Sign in</a>'
-        + '<a href="/login.html" class="header-btn header-btn-fill">Get started</a>'
+      nav.innerHTML = '<a href="/login.html" class="btn btn-ghost" style="padding:10px 20px;border-radius:50px;font-size:0.88rem;">Sign in</a>'
+        + '<a href="/login.html" class="btn btn-primary" style="padding:10px 22px;">Get started</a>'
     }
   }
 
-  // ── Click estimate ─────────────────────────────────────────────
-  function calcVisitors(n) {
-    // Optimistic estimate: ~$0.67 effective CPC, rounded to nearest 5
-    return Math.round(n * 3 / 2 / 5) * 5
-  }
-
-  var boostAmt     = document.getElementById('boost-amount')
-  var boostVis     = document.getElementById('boost-visitors')
-  var boostDisplay = document.getElementById('boost-display')
-
-  function updateBoostDisplay(n) {
-    boostDisplay.textContent = n.toLocaleString()
-    boostVis.textContent     = calcVisitors(n).toLocaleString()
-    var pct = Math.round(((n - 10) / (1500 - 10)) * 100)
-    boostAmt.style.background = 'linear-gradient(90deg,#7c6fff ' + pct + '%,rgba(255,255,255,0.07) ' + pct + '%)'
-  }
-
-  boostAmt.addEventListener('input', function() { updateBoostDisplay(parseInt(this.value) || 100) })
-  updateBoostDisplay(300)
-
-  // ── Field validation ───────────────────────────────────────────
+  /* ── Field validation ── */
   function requireField(inp, msg) {
     if (inp.value.trim()) return true
     inp.classList.add('err')
@@ -771,110 +662,178 @@
     return false
   }
 
-  // ── Monthly plan buttons ───────────────────────────────────────
-  document.querySelectorAll('.plan-btn[data-price]').forEach(function(btn) {
+  /* ── Monthly plan buttons ── */
+  document.querySelectorAll('.pricing-btn[data-price]').forEach(function(btn) {
     btn.addEventListener('click', function() {
       var price = this.getAttribute('data-price')
-
-      // Require login first
-      if (!currentUser) {
-        window.location.href = '/login.html'
-        return
-      }
-
-      // Get site URL from account or fallback to visible input
+      if (!currentUser) { window.location.href = '/login.html'; return }
       var siteUrl = currentUser.user_metadata && currentUser.user_metadata.site_url
       if (!siteUrl) {
-        var inp = this.closest('.plan').querySelector('.site-input')
+        var inp = this.closest('.pricing-card').querySelector('.plan-site-input')
         if (inp) {
           if (!requireField(inp, 'Please enter your website address')) return
           siteUrl = inp.value.trim()
-          // Save it to their account for next time
           sb.auth.updateUser({ data: { site_url: siteUrl } })
         }
       }
-
       var link = cfg.stripe['plan' + price]
       if (!link || link.indexOf('REPLACE') !== -1) {
         alert('Payment links not set up yet. Please update config.js with your Stripe links.')
         return
       }
-
-      // Pass user ID and prefill email so the webhook can link the order
-      var url = link
+      window.location.href = link
         + '?client_reference_id=' + encodeURIComponent(currentUser.id)
         + '&prefilled_email='     + encodeURIComponent(currentUser.email)
-      window.location.href = url
     })
   })
 
-  // ── One-time boost button ──────────────────────────────────────
-  document.getElementById('boost-btn').addEventListener('click', async function() {
-    // Require login
-    if (!currentUser) {
-      window.location.href = '/login.html'
-      return
-    }
+  /* ── Google Ads boost slider ── */
+  function calcVisitors(n) { return Math.round(n * 3 / 2 / 5) * 5 }
 
+  var boostAmt     = document.getElementById('boost-amount')
+  var boostVis     = document.getElementById('boost-visitors')
+  var boostDisplay = document.getElementById('boost-display')
+
+  function updateBoostDisplay(n) {
+    boostDisplay.textContent = n.toLocaleString()
+    boostVis.textContent     = calcVisitors(n).toLocaleString()
+    var pct = Math.round(((n - 10) / (1500 - 10)) * 100)
+    boostAmt.style.background = 'linear-gradient(90deg, var(--accent) ' + pct + '%, rgba(255,255,255,0.07) ' + pct + '%)'
+  }
+  boostAmt.addEventListener('input', function() { updateBoostDisplay(parseInt(this.value) || 100) })
+  updateBoostDisplay(300)
+
+  /* ── Boost button ── */
+  document.getElementById('boost-btn').addEventListener('click', async function() {
+    if (!currentUser) { window.location.href = '/login.html'; return }
     var meta     = currentUser.user_metadata || {}
     var siteUrl  = meta.site_url || ''
     var keywords = meta.keywords || ''
     var location = meta.location || ''
     var amt      = parseInt(boostAmt.value) || 10
-
-    // If no site on account, fall back to the visible input
     if (!siteUrl) {
       var siteInp = document.getElementById('boost-site')
       if (!siteInp || !requireField(siteInp, 'Please enter your website address')) return
       siteUrl = siteInp.value.trim()
     }
-
     var btn = this
-    btn.textContent = 'Redirecting to payment…'
-    btn.disabled = true
-
-    var checkoutUrl = cfg.supabase.url + '/functions/v1/create-checkout'
-
-    fetch(checkoutUrl, {
-      method:  'POST',
+    btn.textContent = 'Redirecting to payment…'; btn.disabled = true
+    fetch(cfg.supabase.url + '/functions/v1/create-checkout', {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + cfg.supabase.anonKey },
-      body: JSON.stringify({
-        amount:   amt,
-        siteUrl:  siteUrl,
-        keywords: keywords,
-        location: location,
-        userId:   currentUser.id,
-      }),
+      body: JSON.stringify({ amount: amt, siteUrl: siteUrl, keywords: keywords, location: location, userId: currentUser.id }),
     })
     .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, status: r.status, data: d } }) })
     .then(function(res) {
-      if (res.data.url) {
-        window.location.href = res.data.url
-      } else {
-        btn.textContent = 'Launch My Google Ads Campaign →'
-        btn.disabled = false
-        console.error('Checkout error:', res.status, res.data)
+      if (res.data.url) { window.location.href = res.data.url }
+      else {
+        btn.textContent = 'Launch My Google Ads Campaign →'; btn.disabled = false
         alert('Error ' + res.status + ': ' + (res.data.error || res.data.message || JSON.stringify(res.data)))
       }
     })
     .catch(function() {
-      btn.textContent = 'Launch My Google Ads Campaign →'
-      btn.disabled = false
+      btn.textContent = 'Launch My Google Ads Campaign →'; btn.disabled = false
       alert('Request failed. Please try again.')
     })
   })
 
-  // ── Success banner after payment ───────────────────────────────
+  /* ── Success banner ── */
   var params = new URLSearchParams(window.location.search)
   if (params.get('boost') === 'success') {
     var successSite = params.get('site') || 'your site'
     var banner = document.createElement('div')
     banner.style.cssText = 'position:fixed;top:0;left:0;width:100%;background:#22c55e;color:#fff;text-align:center;padding:1.2rem 1rem;font-size:1.1rem;font-weight:700;z-index:9999;box-shadow:0 2px 12px rgba(0,0,0,0.3);'
-    banner.innerHTML = '&#10003; Payment received! Your Google Ads campaign for <strong>' + successSite + '</strong> will be live within 24 hours. Check your email for confirmation.'
-      + ' <span style="cursor:pointer;margin-left:1rem;opacity:0.7;" onclick="this.parentNode.remove()">&#10005;</span>'
+    banner.innerHTML = '✓ Payment received! Your Google Ads campaign for <strong>' + successSite + '</strong> will be live within 24 hours. Check your email for confirmation.'
+      + ' <span style="cursor:pointer;margin-left:1rem;opacity:0.7;" onclick="this.parentNode.remove()">✕</span>'
     document.body.prepend(banner)
     history.replaceState({}, '', '/')
   }
+
+  /* ── Custom cursor ── */
+  var cursor   = document.getElementById('cursor')
+  var follower = document.getElementById('cursor-follower')
+  var mx = 0, my = 0, fx = 0, fy = 0
+
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'
+  })
+  ;(function animFollower() {
+    fx += (mx - fx) * 0.12; fy += (my - fy) * 0.12
+    follower.style.left = fx + 'px'; follower.style.top = fy + 'px'
+    requestAnimationFrame(animFollower)
+  })()
+  document.querySelectorAll('a, button').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { cursor.classList.add('hovered'); follower.classList.add('hovered') })
+    el.addEventListener('mouseleave', function() { cursor.classList.remove('hovered'); follower.classList.remove('hovered') })
+  })
+
+  /* ── Nav scroll effect ── */
+  var navEl = document.getElementById('nav')
+  window.addEventListener('scroll', function() {
+    navEl.classList.toggle('scrolled', window.scrollY > 20)
+  }, { passive: true })
+
+  /* ── Hamburger / mobile menu ── */
+  var hamburger  = document.getElementById('hamburger')
+  var mobileMenu = document.getElementById('mobile-menu')
+  hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('open')
+    mobileMenu.classList.toggle('open')
+  })
+  mobileMenu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      hamburger.classList.remove('open'); mobileMenu.classList.remove('open')
+    })
+  })
+
+  /* ── Reveal on scroll ── */
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('revealed'); revealObserver.unobserve(e.target) } })
+  }, { threshold: 0.12 })
+  document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(function(el) {
+    revealObserver.observe(el)
+  })
+
+  /* ── Particles canvas ── */
+  ;(function() {
+    var canvas = document.getElementById('particles')
+    if (!canvas) return
+    var ctx = canvas.getContext('2d')
+    var W, H, dots = []
+
+    function resize() {
+      W = canvas.width  = canvas.offsetWidth
+      H = canvas.height = canvas.offsetHeight
+    }
+    resize()
+    window.addEventListener('resize', resize, { passive: true })
+
+    for (var i = 0; i < 60; i++) {
+      dots.push({
+        x: Math.random() * 1000, y: Math.random() * 1000,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 1.5 + 0.5,
+        a: Math.random() * 0.5 + 0.15
+      })
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H)
+      dots.forEach(function(d) {
+        d.x += d.vx; d.y += d.vy
+        if (d.x < 0) d.x = W; if (d.x > W) d.x = 0
+        if (d.y < 0) d.y = H; if (d.y > H) d.y = 0
+        ctx.beginPath()
+        ctx.arc(d.x % W, d.y % H, d.r, 0, Math.PI * 2)
+        ctx.fillStyle = 'rgba(74,222,128,' + d.a + ')'
+        ctx.fill()
+      })
+      requestAnimationFrame(draw)
+    }
+    draw()
+  })()
 </script>
 </body>
 </html>
