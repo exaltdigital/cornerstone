@@ -27,7 +27,8 @@ window.ExaltConfig = {
     plan100: 'https://buy.stripe.com/cNi6oI9WweIJ1utd8x67S01',   // Starter   — A$100/month
     plan200: 'https://buy.stripe.com/dRm4gA7Oo5897SR8Sh67S02',   // Growth    — A$200/month
     plan400: 'https://buy.stripe.com/5kQ8wQ1q07ghgpn7Od67S03',   // Pro       — A$400/month
-    plan600: 'https://buy.stripe.com/eVqeVe1q09op0qp4C167S04',   // Authority — A$600/month
+    plan700:  'https://buy.stripe.com/9B66oI5GgdEFc979Wl67S06',    // Abundant   — A$700/month
+    plan1300: 'https://buy.stripe.com/fZu14o6Kk7ghehf6K967S05',    // Sovereign  — A$1,300/month
   },
 
 }

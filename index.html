@@ -59,21 +59,40 @@
       font-weight: 600; display: block;
     }
 
-    /* ── 4-col pricing grid — wider container so cards breathe ── */
+    /* ── Plan meta chips (per-day + hours) ── */
+    .plan-meta {
+      display: flex; gap: 8px; margin: 12px 0 16px; flex-wrap: wrap;
+    }
+    .plan-meta-chip {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 12px; white-space: nowrap;
+    }
+    .plan-meta-chip em { font-style: normal; color: var(--accent); }
+    .pricing-card--authority .plan-meta-chip { border-color: rgba(74,222,128,0.2); }
+    .pricing-card--sovereign .plan-meta-chip { border-color: rgba(251,191,36,0.2); }
+    .pricing-card--sovereign .plan-meta-chip em { color: var(--accent-2); }
+
+
+    /* ── 5-col pricing grid — wider container so cards breathe ── */
     .pricing-section-wide {
-      max-width: 1480px;
+      max-width: 1680px;
       margin: 0 auto;
       padding: 0 clamp(16px, 3vw, 40px);
     }
     .pricing-panel-4 {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 24px;
     }
-    @media (max-width: 1100px) { .pricing-panel-4 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 1300px) { .pricing-panel-4 { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px)  { .pricing-panel-4 { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px)  { .pricing-panel-4 { grid-template-columns: 1fr; } }
 
-    /* ── Authority "best" card ── */
+    /* ── Authority "best" cards ── */
     .pricing-card--authority {
       border-color: var(--accent);
       background: linear-gradient(160deg, rgba(74,222,128,0.07), rgba(74,222,128,0.02));
@@ -82,7 +101,59 @@
     .pricing-card--authority:hover {
       box-shadow: 0 0 0 1px var(--accent), 0 28px 64px rgba(74,222,128,0.28);
     }
+    .pricing-card--sovereign {
+      border-color: var(--accent-2);
+      background: linear-gradient(160deg, rgba(251,191,36,0.08), rgba(251,191,36,0.02));
+      box-shadow: 0 0 0 1px var(--accent-2), 0 20px 56px rgba(251,191,36,0.18);
+      position: relative;
+    }
+    .pricing-card--sovereign:hover {
+      box-shadow: 0 0 0 1px var(--accent-2), 0 32px 72px rgba(251,191,36,0.32);
+    }
     .pricing-badge { color: #05050a; } /* dark text on green gradient badge */
+
+    /* ── Electric field animation ── */
+    @keyframes electric-green {
+      0%   { box-shadow: 0 0 0 1px var(--accent), 0 0 12px 2px rgba(74,222,128,0.5), 0 0 40px 6px rgba(74,222,128,0.2); }
+      20%  { box-shadow: 0 0 0 1px #86efac,        0 0 20px 4px rgba(134,239,172,0.7), 0 0 60px 10px rgba(74,222,128,0.3); }
+      35%  { box-shadow: 0 0 0 1px var(--accent), 0 0 8px  1px rgba(74,222,128,0.3),  0 0 30px 4px rgba(74,222,128,0.15); }
+      55%  { box-shadow: 0 0 0 2px #4ade80,        0 0 28px 6px rgba(74,222,128,0.8), 0 0 80px 14px rgba(74,222,128,0.35); }
+      70%  { box-shadow: 0 0 0 1px var(--accent), 0 0 14px 2px rgba(74,222,128,0.4),  0 0 45px 7px rgba(74,222,128,0.2); }
+      85%  { box-shadow: 0 0 0 2px #86efac,        0 0 22px 5px rgba(134,239,172,0.65),0 0 55px 10px rgba(74,222,128,0.25); }
+      100% { box-shadow: 0 0 0 1px var(--accent), 0 0 12px 2px rgba(74,222,128,0.5), 0 0 40px 6px rgba(74,222,128,0.2); }
+    }
+    @keyframes electric-gold {
+      0%   { box-shadow: 0 0 0 1px var(--accent-2), 0 0 12px 2px rgba(251,191,36,0.5),  0 0 40px 6px rgba(251,191,36,0.2); }
+      20%  { box-shadow: 0 0 0 1px #fde68a,          0 0 22px 5px rgba(253,230,138,0.75),0 0 65px 12px rgba(251,191,36,0.35); }
+      35%  { box-shadow: 0 0 0 1px var(--accent-2), 0 0 8px  1px rgba(251,191,36,0.3),  0 0 30px 4px rgba(251,191,36,0.15); }
+      55%  { box-shadow: 0 0 0 2px #fbbf24,          0 0 30px 7px rgba(251,191,36,0.85),0 0 90px 16px rgba(251,191,36,0.4); }
+      70%  { box-shadow: 0 0 0 1px var(--accent-2), 0 0 16px 3px rgba(251,191,36,0.45), 0 0 50px 8px rgba(251,191,36,0.22); }
+      85%  { box-shadow: 0 0 0 2px #fde68a,          0 0 24px 5px rgba(253,230,138,0.7),0 0 60px 11px rgba(251,191,36,0.28); }
+      100% { box-shadow: 0 0 0 1px var(--accent-2), 0 0 12px 2px rgba(251,191,36,0.5),  0 0 40px 6px rgba(251,191,36,0.2); }
+    }
+    .pricing-card--authority {
+      animation: electric-green 2.8s ease-in-out infinite;
+    }
+    .pricing-card--authority:hover {
+      animation: none;
+      box-shadow: 0 0 0 2px var(--accent), 0 0 40px 10px rgba(74,222,128,0.5), 0 0 80px 20px rgba(74,222,128,0.25);
+    }
+    .pricing-card--sovereign {
+      animation: electric-gold 3.1s ease-in-out infinite;
+    }
+    .pricing-card--sovereign:hover {
+      animation: none;
+      box-shadow: 0 0 0 2px var(--accent-2), 0 0 40px 10px rgba(251,191,36,0.55), 0 0 80px 20px rgba(251,191,36,0.28);
+    }
+    .pricing-badge--gold {
+      display: inline-block;
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      color: #1a1000;
+      font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 999px;
+      margin-bottom: 10px;
+    }
 
     /* ── Explainer 3-col ── */
     .explain-grid {
@@ -204,6 +275,113 @@
       display: flex; justify-content: space-between;
       font-size: 0.7rem; color: var(--text-faint); margin-top: 4px;
     }
+
+    /* ── Terms checkbox ── */
+    .terms-check-wrap {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 14px; cursor: pointer;
+    }
+    .terms-check-wrap input[type="checkbox"] {
+      appearance: none; -webkit-appearance: none;
+      width: 18px; height: 18px; flex-shrink: 0;
+      border: 1.5px solid var(--border);
+      border-radius: 4px; background: rgba(255,255,255,0.04);
+      cursor: pointer; margin-top: 1px;
+      transition: background 0.2s, border-color 0.2s;
+      position: relative;
+    }
+    .terms-check-wrap input[type="checkbox"]:checked {
+      background: var(--accent); border-color: var(--accent);
+    }
+    .terms-check-wrap input[type="checkbox"]:checked::after {
+      content: '✓'; position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: 0.7rem; font-weight: 900; color: #05050a;
+      line-height: 1;
+    }
+    .terms-check-label {
+      font-size: 0.78rem; color: var(--text-faint); line-height: 1.5; cursor: pointer;
+    }
+    .terms-check-label a { color: var(--accent); text-decoration: underline; }
+    .terms-check-label a:hover { color: var(--text); }
+
+    /* ── Plan detail modal ── */
+    .pricing-card { cursor: pointer; }
+    .plan-modal-overlay {
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(5,5,10,0.9);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(16px,3vw,32px);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s;
+    }
+    .plan-modal-overlay.open { opacity: 1; pointer-events: all; }
+    .plan-modal {
+      background: #0d0d15; border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      width: 100%; max-width: 1000px; max-height: 90vh;
+      overflow: hidden; display: flex; flex-direction: column;
+      position: relative;
+      transform: translateY(28px) scale(0.97);
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+    }
+    .plan-modal-overlay.open .plan-modal { transform: translateY(0) scale(1); }
+    .plan-modal-body {
+      display: grid; grid-template-columns: 1fr 1fr;
+      overflow: hidden; flex: 1; min-height: 0;
+    }
+    @media (max-width: 680px) {
+      .plan-modal-body { grid-template-columns: 1fr; overflow-y: auto; }
+      .plan-modal-right { border-left: none !important; border-top: 1px solid var(--border); }
+    }
+    .plan-modal-left {
+      padding: clamp(28px,4vw,44px); overflow-y: auto;
+      border-right: 1px solid var(--border);
+    }
+    .plan-modal-right {
+      padding: clamp(28px,4vw,44px);
+      display: flex; flex-direction: column; gap: 14px;
+      background: rgba(255,255,255,0.01);
+    }
+    .plan-modal-close {
+      position: absolute; top: 14px; right: 16px; z-index: 1;
+      background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+      width: 32px; height: 32px; border-radius: 50%;
+      font-size: 1.15rem; color: var(--text-muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .plan-modal-close:hover { background: rgba(255,255,255,0.13); color: var(--text); }
+    .plan-modal-tier {
+      font-family: var(--font-sans); font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 6px;
+    }
+    .plan-modal-price-row {
+      display: flex; align-items: baseline; gap: 4px; margin-bottom: 16px;
+    }
+    .plan-modal-currency { font-family: var(--font-sans); font-size: 1.4rem; font-weight: 700; color: var(--text); }
+    .plan-modal-amount  { font-family: var(--font-sans); font-size: 3rem; font-weight: 900; color: var(--text); line-height: 1; letter-spacing: -0.03em; }
+    .plan-modal-period  { font-size: 1rem; color: var(--text-muted); }
+    .plan-modal-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; }
+    .plan-modal-features { list-style: none; padding: 0; margin: 0 0 28px; }
+    .plan-modal-features li {
+      font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;
+      padding: 9px 0 9px 22px; border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .plan-modal-graph-title {
+      font-family: var(--font-sans); font-size: 0.95rem;
+      font-weight: 800; color: var(--text);
+    }
+    .plan-modal-graph-note { font-size: 0.72rem; color: var(--text-faint); line-height: 1.55; }
+    .plan-modal-legend {
+      display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+    }
+    .modal-legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.75rem; color: var(--text-muted); }
+    .modal-legend-line { width: 22px; height: 2px; border-radius: 2px; }
+    .modal-legend-line--noseo { background: rgba(150,150,175,0.5); border-top: 2px dashed rgba(150,150,175,0.5); height: 0; }
+    #plan-modal-canvas { width: 100%; border-radius: var(--radius-sm); display: block; flex: 1; min-height: 0; }
   </style>
 </head>
 <body>
@@ -258,13 +436,13 @@
   <div class="hero-content">
     <div class="hero-badge">
       <div class="badge-dot"></div>
-      Hobart-based &middot; serving AU, UK &amp; beyond
+      Queensland-based &middot; ranking sites across AU &amp; beyond
     </div>
     <h1 class="hero-title">
-      <span class="line">Your website.</span>
-      <span class="line gradient-text">Found. Ranked. Growing.</span>
+      <span class="line">Rank on Google.</span>
+      <span class="line gradient-text">For more searches. Every month.</span>
     </h1>
-    <p class="hero-sub">Every month we do the technical SEO work that compounds into explosive, lasting growth — for any website, any niche, any size. From a 7-point foundation audit all the way to full authority domination.</p>
+    <p class="hero-sub">We get your website appearing at the top of Google for as many relevant searches as possible — and we push that number higher every single month. More keywords, more pages, more of your niche owned by you.</p>
     <div class="hero-actions">
       <a href="#pricing" class="btn btn-primary">See plans &amp; pricing</a>
       <a href="/about.html" class="btn btn-ghost">How it works</a>
@@ -272,17 +450,17 @@
     <div class="hero-stats">
       <div class="stat">
         <span class="stat-num">7<span class="stat-suffix">×</span></span>
-        <span class="stat-label">avg. ranking lift</span>
+        <span class="stat-label">avg. keyword ranking lift</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat">
         <span class="stat-num">13<span class="stat-suffix">+</span></span>
-        <span class="stat-label">industries served</span>
+        <span class="stat-label">industries ranked</span>
       </div>
       <div class="stat-divider"></div>
       <div class="stat">
         <span class="stat-num">100<span class="stat-suffix">%</span></span>
-        <span class="stat-label">transparent reporting</span>
+        <span class="stat-label">monthly ranking reports</span>
       </div>
     </div>
   </div>
@@ -327,24 +505,24 @@
   <div class="container">
     <div class="section-header">
       <p class="section-eyebrow">The honest explainer</p>
-      <h2 class="section-title">Is your website <em>invisible on Google?</em></h2>
-      <p style="color:var(--text-muted);max-width:560px;margin:16px auto 0;font-size:1rem;line-height:1.75;">Most websites — personal sites, blogs, portfolios, small operations — don't show up in search. Not because they're not good, but because Google doesn't have a clear enough picture of what they are. That's exactly what we fix.</p>
+      <h2 class="section-title">Your site could be ranking for <em>hundreds of searches.</em> It probably isn't.</h2>
+      <p style="color:var(--text-muted);max-width:560px;margin:16px auto 0;font-size:1rem;line-height:1.75;">Every day, people search for exactly what you offer — and your competitors show up instead of you. Not because they're better, but because Google has a clearer picture of their site. We fix that, then we push your ranking across more and more searches every month.</p>
     </div>
     <div class="explain-grid">
       <div class="explain-card reveal-up">
         <div class="explain-icon">🔍</div>
-        <h3>Right now, Google may not know your site</h3>
-        <p>Think of Google as a giant library. If your site isn't set up correctly, it's like a book with no title, no category, and no shelf. Nobody finds it — even if it's great.</p>
+        <h3>Step 1: Get Google to read every page correctly</h3>
+        <p>Before you rank for anything, Google needs to understand what each page is about. We fix the technical foundation so every page becomes a candidate to rank — for something.</p>
       </div>
       <div class="explain-card reveal-up" data-delay="100">
-        <div class="explain-icon">🔧</div>
-        <h3>Every month, we make it clearer</h3>
-        <p>We do the behind-the-scenes work — starting with 7 core technical fixes — that helps Google understand exactly what your business does, who it's for, and why it should rank.</p>
+        <div class="explain-icon">🎯</div>
+        <h3>Step 2: Target more searches, every month</h3>
+        <p>We map the searches people actually type, then optimise your pages to match them. Each month we expand that list — more keywords, more pages, more chances to appear at the top.</p>
       </div>
       <div class="explain-card reveal-up" data-delay="200">
         <div class="explain-icon">📈</div>
-        <h3>Over time, more people find you</h3>
-        <p>As Google gets a better picture of your site, it shows it to more people. Results build slowly — but they compound month after month, and they stick.</p>
+        <h3>Step 3: Rankings compound over time</h3>
+        <p>Once a page ranks, it tends to keep ranking — and climb. After 6 months you're not just ranking for more searches, you're ranking higher for all of them. The effect is exponential.</p>
       </div>
     </div>
   </div>
@@ -354,10 +532,9 @@
 <section style="padding:0 0 clamp(40px,6vw,80px);">
   <div class="container">
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:clamp(28px,4vw,48px);display:flex;align-items:center;gap:clamp(24px,4vw,48px);flex-wrap:wrap;" class="reveal-up">
-      <div style="width:72px;height:72px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:1.4rem;font-weight:900;color:#05050a;flex-shrink:0;">ED</div>
       <div style="flex:1;min-width:220px;">
         <p style="font-family:var(--font-sans);font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-2);margin-bottom:8px;">About the team</p>
-        <p style="font-size:0.95rem;color:var(--text-muted);line-height:1.75;max-width:620px;">Cornerstone was founded by an Israeli-born developer now based in Hobart, Tasmania. After growing websites across Israel, Europe, and Australia, our team built this service around one conviction: consistent, honest monthly SEO work compounds into explosive, lasting growth — and every website deserves access to it.</p>
+        <p style="font-size:0.95rem;color:var(--text-muted);line-height:1.75;max-width:620px;">Cornerstone is a Queensland-based SEO team. After growing websites across Australia and internationally, we built this service around one conviction: consistent, honest monthly SEO work compounds into explosive, lasting growth — and every website deserves access to it.</p>
       </div>
       <a href="/about.html" class="btn btn-ghost" style="flex-shrink:0;white-space:nowrap;">Meet the team &rarr;</a>
     </div>
@@ -369,21 +546,27 @@
   <div class="pricing-section-wide">
     <div class="section-header reveal-up">
       <p class="section-eyebrow">Simple, honest pricing</p>
-      <h2 class="section-title">Pick your level of <em>growth</em></h2>
+      <h2 class="section-title">Pick how much of Google <em>you want to own</em></h2>
       <p style="color:var(--text-muted);max-width:520px;margin:16px auto 0;font-size:1rem;">Month-to-month &mdash; no lock-in, no hidden fees. Work starts within 24 hours of sign-up.</p>
     </div>
 
     <div class="pricing-panel-4">
 
       <!-- Seed ($100) -->
-      <div class="pricing-card reveal-up">
+      <div class="pricing-card reveal-up" data-plan-index="0" data-curve="0.15" data-curvemax="0.35" data-accent="rgba(74,222,128,1)">
         <div class="pricing-tier" style="margin-top:36px;">Seed</div>
         <div class="pricing-price">
           <span class="price-currency">A$</span>
           <span class="price-amount">100</span>
           <span class="price-period">/mo</span>
         </div>
-        <p class="pricing-desc">Every great thing begins with a seed. This is the technical foundation — the soil prepared, the ground made ready for everything that follows.</p>
+        <div class="plan-meta">
+          <div class="plan-meta-chip"><em>5 pages</em> pushed to rank</div>
+          <div class="plan-meta-chip">avg. <em>+31%</em> traffic growth</div>
+          <div class="plan-meta-chip"><em>~$3</em>/day</div>
+          <div class="plan-meta-chip"><em>4 hrs</em> invested/mo</div>
+        </div>
+        <p class="pricing-desc">The foundation. We get Google reading your site correctly so your pages become eligible to rank — then submit and verify everything so Google actually indexes them.</p>
         <ul class="pricing-features">
           <li>7-point technical audit: title tags, meta descriptions, H1s, canonicals, sitemap, robots.txt &amp; schema check</li>
           <li>Google Search Console setup &amp; property verification</li>
@@ -395,18 +578,28 @@
         </ul>
         <label class="plan-input-label">Your website address</label>
         <input type="text" class="plan-site-input" placeholder="e.g. yourwebsite.com" />
+        <label class="terms-check-wrap">
+          <input type="checkbox" class="terms-checkbox" />
+          <span class="terms-check-label">I agree to the <a href="/terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a></span>
+        </label>
         <button class="btn btn-ghost btn-full pricing-btn" data-price="100">Get started &mdash; A$100/mo</button>
       </div>
 
       <!-- Harvest ($200) -->
-      <div class="pricing-card reveal-up" data-delay="100">
+      <div class="pricing-card reveal-up" data-delay="100" data-plan-index="1" data-curve="0.22" data-curvemax="0.55" data-accent="rgba(74,222,128,1)">
         <div class="pricing-tier" style="margin-top:36px;">Harvest</div>
         <div class="pricing-price">
           <span class="price-currency">A$</span>
           <span class="price-amount">200</span>
           <span class="price-period">/mo</span>
         </div>
-        <p class="pricing-desc">The harvest is plentiful. Full ongoing SEO for less than $7 a day — consistent monthly work that turns your site's potential into real, growing visibility.</p>
+        <div class="plan-meta">
+          <div class="plan-meta-chip"><em>20 keywords</em> targeted/mo</div>
+          <div class="plan-meta-chip">avg. <em>+74%</em> traffic growth</div>
+          <div class="plan-meta-chip"><em>~$7</em>/day</div>
+          <div class="plan-meta-chip"><em>8 hrs</em> invested/mo</div>
+        </div>
+        <p class="pricing-desc">We expand the number of searches your site appears in every month — targeting real keywords people use and optimising every page to compete for them.</p>
         <ul class="pricing-features">
           <li>Everything in Seed</li>
           <li>On-page optimisation across your whole site (up to 13 pages/month)</li>
@@ -415,22 +608,32 @@
           <li>Image alt text optimisation site-wide</li>
           <li>Core Web Vitals remediation (LCP, CLS &amp; FID targets)</li>
           <li>Google Business Profile setup &amp; optimisation</li>
-          <li>Monthly GSC report with keyword movement tracking</li>
+          <li>Monthly plain-English update — what ranked, what moved, what's next</li>
         </ul>
         <label class="plan-input-label">Your website address</label>
         <input type="text" class="plan-site-input" placeholder="e.g. yourwebsite.com" />
+        <label class="terms-check-wrap">
+          <input type="checkbox" class="terms-checkbox" />
+          <span class="terms-check-label">I agree to the <a href="/terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a></span>
+        </label>
         <button class="btn btn-ghost btn-full pricing-btn" data-price="200">Get started &mdash; A$200/mo</button>
       </div>
 
       <!-- Faithful ($400) -->
-      <div class="pricing-card reveal-up" data-delay="200">
+      <div class="pricing-card reveal-up" data-delay="200" data-plan-index="2" data-curve="0.30" data-curvemax="0.70" data-accent="rgba(74,222,128,1)">
         <div class="pricing-tier" style="margin-top:36px;">Faithful</div>
         <div class="pricing-price">
           <span class="price-currency">A$</span>
           <span class="price-amount">400</span>
           <span class="price-period">/mo</span>
         </div>
-        <p class="pricing-desc"><em style="font-style:normal;color:var(--accent-2);">"Well done, good and faithful servant — you have been faithful with a few things; I will put you in charge of many."</em> This is where transformation happens. Agency-level SEO, carried out with complete faithfulness every month. Trusted with your site, we deliver much.</p>
+        <div class="plan-meta">
+          <div class="plan-meta-chip"><em>50 keywords</em> targeted/mo</div>
+          <div class="plan-meta-chip">avg. <em>+148%</em> traffic growth</div>
+          <div class="plan-meta-chip"><em>~$13</em>/day</div>
+          <div class="plan-meta-chip"><em>16 hrs</em> invested/mo</div>
+        </div>
+        <p class="pricing-desc">Agency-level SEO for the road to $13 a day. We go after your entire site — every page optimised, every keyword opportunity mapped, every competitor gap identified and closed.</p>
         <ul class="pricing-features">
           <li>Everything in Harvest</li>
           <li>Unlimited page optimisation — your entire site tended and cultivated monthly</li>
@@ -439,37 +642,84 @@
           <li>Top-3 competitor gap analysis with a clear, ranked action plan</li>
           <li>Page speed stack: lazy loading, image compression, cache headers</li>
           <li>1 fully researched content brief per month</li>
-          <li>Priority work queue + 30-day forward SEO roadmap — our covenant, renewed monthly</li>
+          <li>Priority work queue + 30-day forward SEO roadmap, renewed monthly without exception</li>
         </ul>
         <label class="plan-input-label">Your website address</label>
         <input type="text" class="plan-site-input" placeholder="e.g. yourwebsite.com" />
+        <label class="terms-check-wrap">
+          <input type="checkbox" class="terms-checkbox" />
+          <span class="terms-check-label">I agree to the <a href="/terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a></span>
+        </label>
         <button class="btn btn-ghost btn-full pricing-btn" data-price="400">Get started &mdash; A$400/mo</button>
       </div>
 
-      <!-- Exalt ($600) — BEST -->
-      <div class="pricing-card pricing-card--authority reveal-up" data-delay="300">
-        <div class="pricing-badge">🚀 Explosive Growth</div>
+      <!-- Abundant ($700) — BEST -->
+      <div class="pricing-card pricing-card--authority reveal-up" data-delay="300" data-plan-index="3" data-curve="0.38" data-curvemax="0.82" data-accent="rgba(74,222,128,1)">
+        <div class="pricing-badge">⭐ Most Popular</div>
         <div class="pricing-tier">Abundant</div>
         <div class="pricing-price">
           <span class="price-currency">A$</span>
-          <span class="price-amount">600</span>
+          <span class="price-amount">700</span>
           <span class="price-period">/mo</span>
         </div>
-        <p class="pricing-desc"><em style="font-style:normal;color:var(--accent-2);">"I have come that they may have life, and have it more abundantly."</em><br> The pinnacle — maximum effort, maximum output. Built for websites called to rise above and become the undeniable, authoritative voice in their niche. Grace upon grace, month after month, without ceasing.</p>
+        <div class="plan-meta">
+          <div class="plan-meta-chip"><em>100 keywords</em> targeted/mo</div>
+          <div class="plan-meta-chip">avg. <em>+230%</em> traffic growth</div>
+          <div class="plan-meta-chip"><em>~$23</em>/day</div>
+          <div class="plan-meta-chip"><em>28 hrs</em> invested/mo</div>
+        </div>
+        <p class="pricing-desc">For sites that want to own the top of Google across their entire niche. We go after every high-value keyword, dominate local and national searches, and push your rankings higher every single month.</p>
         <ul class="pricing-features">
           <li>Everything in Faithful</li>
           <li>Full local SEO dominance — citations, NAP consistency, map pack targeting</li>
           <li>13-point monthly ranking audit — 13 pillars of authority, tracked without exception</li>
-          <li>Topical authority content strategy — become the light on the hill in your niche</li>
+          <li>Topical authority content strategy — become the dominant, go-to source in your niche</li>
           <li>Conversion rate optimisation on your highest-traffic pages</li>
           <li>Monthly competitor intelligence report — we watch so you don't have to</li>
           <li>Hreflang &amp; international SEO configuration if applicable</li>
-          <li>Dedicated Slack or WhatsApp channel — direct access, always</li>
-          <li>Always first in our work queue — you are our first fruits, guaranteed</li>
+          <li>Always first in our work queue — guaranteed, no exceptions</li>
         </ul>
         <label class="plan-input-label">Your website address</label>
         <input type="text" class="plan-site-input" placeholder="e.g. yourwebsite.com" />
-        <button class="btn btn-primary btn-full pricing-btn" data-price="600">Get started &mdash; A$600/mo &rarr;</button>
+        <label class="terms-check-wrap">
+          <input type="checkbox" class="terms-checkbox" />
+          <span class="terms-check-label">I agree to the <a href="/terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a></span>
+        </label>
+        <button class="btn btn-primary btn-full pricing-btn" data-price="700">Get started &mdash; A$700/mo &rarr;</button>
+      </div>
+
+      <!-- Sovereign ($1300) -->
+      <div class="pricing-card pricing-card--sovereign reveal-up" data-delay="400" data-plan-index="4" data-curve="0.48" data-curvemax="0.93" data-accent="rgba(251,191,36,1)">
+        <div class="pricing-badge--gold">👑 Maximum Results</div>
+        <div class="pricing-tier" style="margin-top:8px;">Sovereign</div>
+        <div class="pricing-price">
+          <span class="price-currency">A$</span>
+          <span class="price-amount">1,300</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <div class="plan-meta">
+          <div class="plan-meta-chip"><em>200+ keywords</em> targeted/mo</div>
+          <div class="plan-meta-chip">avg. <em>+380%</em> traffic growth</div>
+          <div class="plan-meta-chip"><em>~$43</em>/day</div>
+          <div class="plan-meta-chip"><em>45 hrs</em> invested/mo</div>
+        </div>
+        <p class="pricing-desc">Total search dominance. Full-service SEO plus content production — we write and publish the pages that rank, build the links that move the needle, and track every keyword you're winning.</p>
+        <ul class="pricing-features">
+          <li>Everything in Abundant</li>
+          <li>3 fully researched content briefs per month</li>
+          <li>2 long-form SEO articles written and published for you</li>
+          <li>Advanced backlink outreach — we pitch and secure links on your behalf</li>
+          <li>Weekly plain-English update on your rankings — no jargon, just results</li>
+          <li>Custom Google Data Studio / Looker analytics dashboard</li>
+          <li>Quarterly authority review &amp; 90-day growth roadmap</li>
+        </ul>
+        <label class="plan-input-label">Your website address</label>
+        <input type="text" class="plan-site-input" placeholder="e.g. yourwebsite.com" />
+        <label class="terms-check-wrap">
+          <input type="checkbox" class="terms-checkbox" />
+          <span class="terms-check-label">I agree to the <a href="/terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a></span>
+        </label>
+        <button class="btn btn-ghost btn-full pricing-btn" data-price="1300">Get started &mdash; A$1,300/mo</button>
       </div>
 
     </div>
@@ -483,28 +733,28 @@
   <div class="container">
     <div class="section-header reveal-up">
       <p class="section-eyebrow">Honest expectations</p>
-      <h2 class="section-title">Why SEO takes time &mdash; <em>and why it's worth it</em></h2>
+      <h2 class="section-title">How we get you ranking for <em>more searches every month</em></h2>
     </div>
     <div class="seo-cards">
       <div class="seo-card reveal-up">
         <div class="seo-card-icon">🔍</div>
-        <h4>Google has to be able to read your site first</h4>
-        <p>Before you can rank, Google needs to understand your pages. We fix the technical blockers — issues most business owners never even know exist — within the first 7 days.</p>
+        <h4>Month 1: technical foundation + first keywords</h4>
+        <p>We fix the blockers stopping Google from reading your site, submit it for indexing, and target your first set of keywords — the searches closest to your business, ready to rank fast.</p>
       </div>
       <div class="seo-card reveal-up" data-delay="100">
         <div class="seo-card-icon">🎯</div>
-        <h4>Your pages must match what people actually search</h4>
-        <p>We map the exact phrases people type into Google, then align your pages to those queries — so Google has a clear, specific reason to show your site.</p>
+        <h4>Months 2–3: more pages, more searches</h4>
+        <p>We expand outward — optimising more pages for more keyword clusters, building internal links that spread ranking power, and closing gaps your competitors are exploiting.</p>
       </div>
       <div class="seo-card reveal-up" data-delay="200">
         <div class="seo-card-icon">📈</div>
-        <h4>Every improvement builds on the last</h4>
-        <p>Unlike ads, SEO compounds. Each month of work builds on everything before it. After 6 months the effect is exponential — this is where explosive growth becomes visible.</p>
+        <h4>Months 4–6: rankings climb, traffic compounds</h4>
+        <p>This is where it gets exciting. Rankings that started on page 2 or 3 move to page 1. Clicks compound. Each new page we optimise adds to an already-growing base.</p>
       </div>
       <div class="seo-card reveal-up" data-delay="300">
-        <div class="seo-card-icon">⏱</div>
-        <h4>Real results take 3–6 months — and that's normal</h4>
-        <p>We'll be straight with you: SEO isn't instant. But sites that stay consistent are the ones that end up dominating their market. We do the work every month so you don't have to think about it.</p>
+        <div class="seo-card-icon">🏆</div>
+        <h4>Month 6+: owning your niche on Google</h4>
+        <p>Sites that stay consistent end up dominating search for their entire category — showing up for dozens or hundreds of relevant searches. That's the goal we're building toward every month.</p>
       </div>
     </div>
   </div>
@@ -543,6 +793,10 @@
           </div>
           <div class="boost-result-num" id="boost-visitors">300</div>
         </div>
+        <label class="terms-check-wrap" id="boost-terms-wrap">
+          <input type="checkbox" class="terms-checkbox" id="boost-terms" />
+          <span class="terms-check-label">I agree to the <a href="/terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a></span>
+        </label>
         <button class="btn btn-primary btn-full" id="boost-btn" style="font-size:1rem;">Launch My Google Ads Campaign &rarr;</button>
       </div>
     </div>
@@ -590,11 +844,31 @@
         <a href="/about.html">About</a>
         <a href="/faq.html">FAQ</a>
         <a href="/contact.html">Contact</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
         <a href="/dashboard.html">My orders</a>
       </div>
     </div>
   </div>
 </footer>
+
+<!-- Plan detail modal -->
+<div class="plan-modal-overlay" id="plan-modal-overlay">
+  <div class="plan-modal" id="plan-modal">
+    <button class="plan-modal-close" id="plan-modal-close">&times;</button>
+    <div class="plan-modal-body">
+      <div class="plan-modal-left" id="plan-modal-left"></div>
+      <div class="plan-modal-right">
+        <div>
+          <p class="plan-modal-graph-title">Your traffic vs. no SEO</p>
+          <p class="plan-modal-graph-note">Projected over 12 months based on client averages. Results vary by niche and competition.</p>
+        </div>
+        <div class="plan-modal-legend" id="plan-modal-legend"></div>
+        <canvas id="plan-modal-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   /* ── Supabase + Stripe ── */
@@ -662,9 +936,18 @@
     return false
   }
 
+  /* ── Terms checkbox shake ── */
+  function shakeCheckbox(cb) {
+    cb.closest('.terms-check-wrap').style.outline = '1.5px solid #f87171'
+    cb.closest('.terms-check-wrap').style.borderRadius = '6px'
+    setTimeout(function() { cb.closest('.terms-check-wrap').style.outline = '' }, 2000)
+  }
+
   /* ── Monthly plan buttons ── */
   document.querySelectorAll('.pricing-btn[data-price]').forEach(function(btn) {
     btn.addEventListener('click', function() {
+      var cb = this.closest('.pricing-card').querySelector('.terms-checkbox')
+      if (cb && !cb.checked) { shakeCheckbox(cb); return }
       var price = this.getAttribute('data-price')
       if (!currentUser) { window.location.href = '/login.html'; return }
       var siteUrl = currentUser.user_metadata && currentUser.user_metadata.site_url
@@ -705,6 +988,8 @@
 
   /* ── Boost button ── */
   document.getElementById('boost-btn').addEventListener('click', async function() {
+    var boostTermsCb = document.getElementById('boost-terms')
+    if (boostTermsCb && !boostTermsCb.checked) { shakeCheckbox(boostTermsCb); return }
     if (!currentUser) { window.location.href = '/login.html'; return }
     var meta     = currentUser.user_metadata || {}
     var siteUrl  = meta.site_url || ''
@@ -794,6 +1079,209 @@
   document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(function(el) {
     revealObserver.observe(el)
   })
+
+  /* ── Plan detail modal ── */
+  // Monthly compound growth rates — higher rate = always strictly above lower rate at every month
+  var noSeoRate = 0.008
+  var allPlanData = [
+    { name: 'Seed',      rate: 0.05, accent: 'rgba(74,222,128,1)' },
+    { name: 'Harvest',   rate: 0.08, accent: 'rgba(74,222,128,1)' },
+    { name: 'Faithful',  rate: 0.12, accent: 'rgba(74,222,128,1)' },
+    { name: 'Abundant',  rate: 0.17, accent: 'rgba(74,222,128,1)' },
+    { name: 'Sovereign', rate: 0.23, accent: 'rgba(251,191,36,1)' }
+  ]
+
+  var modalOverlay = document.getElementById('plan-modal-overlay')
+  var modalClose   = document.getElementById('plan-modal-close')
+  var modalLeft    = document.getElementById('plan-modal-left')
+  var modalCanvas  = document.getElementById('plan-modal-canvas')
+
+  function openPlanModal(card) {
+    var planIndex = parseInt(card.dataset.planIndex) || 0
+    var pd       = allPlanData[planIndex]
+    var currency = card.querySelector('.price-currency').textContent
+    var amount   = card.querySelector('.price-amount').textContent
+    var chips    = card.querySelectorAll('.plan-meta-chip')
+    var desc     = card.querySelector('.pricing-desc').innerHTML
+    var features = card.querySelectorAll('.pricing-features li')
+    var price    = card.querySelector('.pricing-btn') ? card.querySelector('.pricing-btn').dataset.price : ''
+    var siteUrl  = currentUser && currentUser.user_metadata && currentUser.user_metadata.site_url
+
+    var chipsHtml = ''
+    chips.forEach(function(c) { chipsHtml += '<div class="plan-meta-chip">' + c.innerHTML + '</div>' })
+    var featuresHtml = ''
+    features.forEach(function(f) { featuresHtml += '<li>' + f.textContent + '</li>' })
+
+    modalLeft.innerHTML =
+      '<p class="plan-modal-tier" style="color:' + pd.accent + ';">' + pd.name + '</p>' +
+      '<div class="plan-modal-price-row"><span class="plan-modal-currency">' + currency + '</span><span class="plan-modal-amount">' + amount + '</span><span class="plan-modal-period">/mo</span></div>' +
+      '<div class="plan-meta" style="margin-bottom:20px;">' + chipsHtml + '</div>' +
+      '<p class="plan-modal-desc">' + desc + '</p>' +
+      '<ul class="plan-modal-features">' + featuresHtml + '</ul>' +
+      (siteUrl
+        ? '<div class="site-chip" style="margin-bottom:16px;">↗ ' + siteUrl.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '') + '</div>'
+        : '<label class="plan-input-label">Your website address</label><input type="text" class="plan-site-input" id="modal-site-input" placeholder="e.g. yourwebsite.com" style="margin-bottom:12px;" />'
+      ) +
+      '<label class="terms-check-wrap" style="margin-bottom:16px;"><input type="checkbox" class="terms-checkbox" id="modal-terms-cb" /><span class="terms-check-label">I agree to the <a href="/terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a></span></label>' +
+      '<button class="btn btn-primary btn-full" id="modal-cta-btn" style="font-size:1rem;">Get started &mdash; ' + currency + amount + '/mo &rarr;</button>'
+
+    modalLeft.querySelectorAll('.plan-modal-features li').forEach(function(li) {
+      var tick = document.createElement('span')
+      tick.textContent = '✓'
+      tick.style.cssText = 'position:absolute;left:0;top:9px;font-weight:800;font-size:0.8rem;color:' + pd.accent
+      li.style.position = 'relative'; li.style.paddingLeft = '22px'
+      li.insertBefore(tick, li.firstChild)
+    })
+
+    // Dynamic legend
+    var legendEl = document.getElementById('plan-modal-legend')
+    var legendHtml = '<div class="modal-legend-item"><div class="modal-legend-line" style="background:' + pd.accent + ';box-shadow:0 0 6px ' + pd.accent.replace(',1)',',0.6)') + ';"></div><span style="color:' + pd.accent + ';font-weight:700;">' + pd.name + '</span></div>'
+    for (var i = planIndex - 1; i >= 0; i--) {
+      legendHtml += '<div class="modal-legend-item"><div class="modal-legend-line" style="background:rgba(74,222,128,0.35);"></div><span>' + allPlanData[i].name + '</span></div>'
+    }
+    legendHtml += '<div class="modal-legend-item"><div class="modal-legend-line modal-legend-line--noseo"></div><span>No SEO</span></div>'
+    legendEl.innerHTML = legendHtml
+
+    modalOverlay.classList.add('open')
+    document.body.style.overflow = 'hidden'
+
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() { drawPlanGraph(modalCanvas, planIndex) })
+    })
+
+    document.getElementById('modal-cta-btn').addEventListener('click', function() {
+      var cb = document.getElementById('modal-terms-cb')
+      if (cb && !cb.checked) { shakeCheckbox(cb); return }
+      if (!currentUser) { window.location.href = '/login.html'; return }
+      var siteInp = document.getElementById('modal-site-input')
+      var url = (currentUser.user_metadata && currentUser.user_metadata.site_url) || (siteInp ? siteInp.value.trim() : '')
+      if (!url && siteInp) { if (!requireField(siteInp, 'Please enter your website address')) return; url = siteInp.value.trim() }
+      if (url && !(currentUser.user_metadata && currentUser.user_metadata.site_url)) sb.auth.updateUser({ data: { site_url: url } })
+      var link = cfg.stripe['plan' + price]
+      if (!link || link.indexOf('REPLACE') !== -1) { alert('Payment link not set up yet.'); return }
+      window.location.href = link + '?client_reference_id=' + encodeURIComponent(currentUser.id) + '&prefilled_email=' + encodeURIComponent(currentUser.email)
+    })
+  }
+
+  function closePlanModal() {
+    modalOverlay.classList.remove('open')
+    document.body.style.overflow = ''
+  }
+
+  modalClose.addEventListener('click', closePlanModal)
+  modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) closePlanModal() })
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePlanModal() })
+  document.querySelectorAll('.pricing-card').forEach(function(card) {
+    card.addEventListener('click', function(e) {
+      if (e.target.closest('button, input, a')) return
+      openPlanModal(card)
+    })
+  })
+
+  function drawPlanGraph(canvas, planIndex) {
+    var topPlan = allPlanData[planIndex]
+    var dpr = window.devicePixelRatio || 1
+    var W = canvas.offsetWidth, H = canvas.offsetHeight || 280
+    canvas.width = W * dpr; canvas.height = H * dpr
+    var ctx = canvas.getContext('2d')
+    ctx.scale(dpr, dpr)
+
+    var pad = { top: 20, right: 76, bottom: 40, left: 50 }
+    var plotW = W - pad.left - pad.right
+    var plotH = H - pad.top - pad.bottom
+    var months = 12, steps = 240
+
+    // Compound interest: (1+r)^t - 1, normalised so top plan = 1.0 at month 12
+    var scale = Math.pow(1 + topPlan.rate, months) - 1
+    function noSeoVal(t)   { return (Math.pow(1 + noSeoRate, t) - 1) / scale }
+    function planVal(p, t) { return (Math.pow(1 + p.rate,    t) - 1) / scale }
+    function px(t)  { return pad.left + (t / months) * plotW }
+    function py(v)  { return pad.top + plotH * (1 - v) }
+
+    // Background
+    ctx.fillStyle = 'rgba(255,255,255,0.018)'
+    ctx.fillRect(pad.left, pad.top, plotW, plotH)
+
+    // Horizontal grid + Y-axis labels (actual traffic increase %)
+    var maxPct = Math.round(scale * 100)  // e.g. 1134 for Sovereign
+    ctx.font = '11px Inter,sans-serif'; ctx.textAlign = 'right'
+    ;[0, 0.25, 0.5, 0.75, 1.0].forEach(function(v) {
+      if (v > 0) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1; ctx.setLineDash([])
+        ctx.beginPath(); ctx.moveTo(pad.left, py(v)); ctx.lineTo(pad.left + plotW, py(v)); ctx.stroke()
+      }
+      ctx.fillStyle = 'rgba(155,155,180,0.55)'
+      ctx.fillText('+' + Math.round(v * maxPct) + '%', pad.left - 6, py(v) + 4)
+    })
+
+    // Vertical grid
+    ctx.setLineDash([2,5]); ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 1
+    ;[3,6,9].forEach(function(m) {
+      ctx.beginPath(); ctx.moveTo(px(m), pad.top); ctx.lineTo(px(m), pad.top + plotH); ctx.stroke()
+    })
+    ctx.setLineDash([])
+
+    // Gradient fill for top plan only
+    var rgb = topPlan.accent.replace('rgba(','').replace(')','').split(',').slice(0,3).join(',')
+    var fillGrad = ctx.createLinearGradient(0, py(1), 0, py(0))
+    fillGrad.addColorStop(0, 'rgba(' + rgb + ',0.22)')
+    fillGrad.addColorStop(1, 'rgba(' + rgb + ',0.02)')
+    ctx.beginPath()
+    ctx.moveTo(px(0), py(noSeoVal(0)))
+    for (var i = 1; i <= steps; i++) ctx.lineTo(px(i/steps*months), py(planVal(topPlan, i/steps*months)))
+    for (var i = steps; i >= 0; i--) ctx.lineTo(px(i/steps*months), py(noSeoVal(i/steps*months)))
+    ctx.closePath(); ctx.fillStyle = fillGrad; ctx.fill()
+
+    // Comparison plan lines (below current)
+    for (var ci = 0; ci < planIndex; ci++) {
+      var cp = allPlanData[ci]
+      var opacity = 0.22 + 0.12 * (ci / Math.max(planIndex - 1, 1))
+      ctx.beginPath()
+      ctx.strokeStyle = 'rgba(74,222,128,' + opacity.toFixed(2) + ')'
+      ctx.lineWidth = 1.2; ctx.setLineDash([])
+      ctx.moveTo(px(0), py(planVal(cp, 0)))
+      for (var i = 1; i <= steps; i++) ctx.lineTo(px(i/steps*months), py(planVal(cp, i/steps*months)))
+      ctx.stroke()
+      // end label
+      ctx.font = '10px Inter,sans-serif'; ctx.textAlign = 'left'
+      ctx.fillStyle = 'rgba(74,222,128,' + Math.min(opacity + 0.15, 0.6).toFixed(2) + ')'
+      ctx.fillText(cp.name, px(months) + 6, py(planVal(cp, months)) + 4)
+    }
+
+    // No SEO line
+    ctx.beginPath(); ctx.setLineDash([5,6])
+    ctx.strokeStyle = 'rgba(155,155,180,0.4)'; ctx.lineWidth = 1.5
+    ctx.moveTo(px(0), py(noSeoVal(0)))
+    for (var i = 1; i <= steps; i++) ctx.lineTo(px(i/steps*months), py(noSeoVal(i/steps*months)))
+    ctx.stroke(); ctx.setLineDash([])
+    ctx.font = '10px Inter,sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = 'rgba(155,155,180,0.6)'
+    ctx.fillText('No SEO', px(months) + 6, py(noSeoVal(months)) + 4)
+
+    // Top plan curve with glow
+    ctx.beginPath()
+    ctx.strokeStyle = topPlan.accent; ctx.lineWidth = 2.5
+    ctx.shadowColor = 'rgba(' + rgb + ',0.5)'; ctx.shadowBlur = 10
+    ctx.moveTo(px(0), py(planVal(topPlan, 0)))
+    for (var i = 1; i <= steps; i++) ctx.lineTo(px(i/steps*months), py(planVal(topPlan, i/steps*months)))
+    ctx.stroke(); ctx.shadowBlur = 0
+
+    // End dot
+    ctx.beginPath(); ctx.arc(px(months), py(1), 4.5, 0, Math.PI*2)
+    ctx.fillStyle = topPlan.accent; ctx.shadowColor = 'rgba(' + rgb + ',0.7)'; ctx.shadowBlur = 10; ctx.fill(); ctx.shadowBlur = 0
+
+    // Top plan end label
+    ctx.font = '600 11px Inter,sans-serif'; ctx.textAlign = 'left'; ctx.fillStyle = topPlan.accent
+    ctx.fillText(topPlan.name, px(months) + 6, py(1) + 4)
+
+    // X labels
+    ctx.fillStyle = 'rgba(155,155,180,0.5)'; ctx.font = '11px Inter,sans-serif'; ctx.textAlign = 'center'
+    ;[0,3,6,9,12].forEach(function(m) { ctx.fillText(m + 'mo', px(m), pad.top + plotH + 22) })
+
+    // Y axis title
+    ctx.save(); ctx.translate(13, pad.top + plotH / 2); ctx.rotate(-Math.PI / 2)
+    ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(155,155,180,0.35)'
+    ctx.font = '10px Inter,sans-serif'; ctx.fillText('Traffic increase', 0, 0); ctx.restore()
+  }
 
   /* ── Particles canvas ── */
   ;(function() {
